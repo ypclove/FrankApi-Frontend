@@ -1,18 +1,18 @@
 import Footer from '@/components/Footer';
-import { LOGO, PRIVACY_AGREEMENT, USER_AGREEMENT } from '@/constant';
+import {
+  EMAIL_PATTERN,
+  LOGO,
+  PRIVACY_AGREEMENT,
+  USER_ACCOUNT_PATTERN,
+  USER_AGREEMENT
+} from '@/constant';
 import {
   getCaptchaUsingGet,
   userEmailRegisterUsingPost,
   userRegisterUsingPost
 } from '@/services/FrankApi/userController';
 import { useParams } from '@@/exports';
-import {
-  LinkOutlined,
-  LockOutlined,
-  MailOutlined,
-  RedditOutlined,
-  UserOutlined
-} from '@ant-design/icons';
+import { LinkOutlined, LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormCheckbox, ProFormText } from '@ant-design/pro-components';
 import { ProFormCaptcha } from '@ant-design/pro-form';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
@@ -37,6 +37,7 @@ const Register: React.FC = () => {
   useEffect(() => {
     form.setFieldsValue({ invitationCode });
   }, [invitationCode]);
+
   const containerClassName = useEmotionCss(() => {
     return {
       display: 'flex',
@@ -50,7 +51,8 @@ const Register: React.FC = () => {
   });
 
   const doRegister = (res: any) => {
-    if (res.data && res.code === 0) {
+    if (res.data && res.code === 20000) {
+      console.log('成功');
       message.success('注册成功');
       setTimeout(() => {
         history.push('/user/login');
@@ -59,16 +61,17 @@ const Register: React.FC = () => {
   };
 
   const handleSubmit = async (values: API.UserRegisterRequest) => {
-    try {
-      // 登录
-      const res = await userRegisterUsingPost({
-        ...values
-      });
-      doRegister(res);
-    } catch (error) {
-      const defaultLoginFailureMessage = '注册失败，请重试！';
-      message.error(defaultLoginFailureMessage);
-    }
+    // try {
+    // 登录
+    const res = await userRegisterUsingPost({
+      ...values
+    });
+    doRegister(res);
+    // }
+    // catch (error) {
+    //   const defaultLoginFailureMessage = '注册失败，请重试！';
+    //   message.error(defaultLoginFailureMessage);
+    // }
   };
 
   const handleEmailSubmit = async (values: API.UserEmailRegisterRequest) => {
@@ -140,14 +143,6 @@ const Register: React.FC = () => {
           {type === 'account' && (
             <>
               <ProFormText
-                name="userName"
-                fieldProps={{
-                  size: 'large',
-                  prefix: <RedditOutlined />
-                }}
-                placeholder={'请输入昵称'}
-              />
-              <ProFormText
                 name="userAccount"
                 fieldProps={{
                   size: 'large',
@@ -157,7 +152,19 @@ const Register: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    message: '账号是必填项'
+                    message: '账号不能为空'
+                  },
+                  {
+                    min: 4,
+                    message: '账号长度为 4-16 字符'
+                  },
+                  {
+                    max: 16,
+                    message: '账号长度为 4-16 字符'
+                  },
+                  {
+                    pattern: RegExp(USER_ACCOUNT_PATTERN),
+                    message: '账号由数字和字母组成'
                   }
                 ]}
               />
@@ -171,7 +178,15 @@ const Register: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    message: '密码是必填项'
+                    message: '密码不能为空'
+                  },
+                  {
+                    min: 8,
+                    message: '密码长度为 8-16 字符'
+                  },
+                  {
+                    max: 16,
+                    message: '密码长度为 8-16 字符'
                   }
                 ]}
               />
@@ -185,7 +200,15 @@ const Register: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    message: '确认密码是必填项'
+                    message: '确认密码不能为空'
+                  },
+                  {
+                    min: 8,
+                    message: '确认密码长度为 8-16 字符'
+                  },
+                  {
+                    max: 16,
+                    message: '确认密码长度为 8-16 字符'
                   }
                 ]}
               />
@@ -202,14 +225,6 @@ const Register: React.FC = () => {
           {type === 'email' && (
             <>
               <ProFormText
-                name="userName"
-                fieldProps={{
-                  size: 'large',
-                  prefix: <RedditOutlined />
-                }}
-                placeholder={'请输入昵称'}
-              />
-              <ProFormText
                 fieldProps={{
                   size: 'large',
                   prefix: <MailOutlined />
@@ -219,21 +234,17 @@ const Register: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    message: '邮箱账号是必填项！'
+                    message: '邮箱不能为空'
                   },
                   {
-                    pattern: /^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$/,
-                    message: '不合法的邮箱账号'
+                    max: 50,
+                    message: '邮箱长度不能超过 50 个字符'
+                  },
+                  {
+                    pattern: RegExp(EMAIL_PATTERN),
+                    message: '邮箱格式不正确'
                   }
                 ]}
-              />
-              <ProFormText
-                name="invitationCode"
-                fieldProps={{
-                  size: 'large',
-                  prefix: <LinkOutlined />
-                }}
-                placeholder={'邀请码（可选）'}
               />
               <ProFormCaptcha
                 fieldProps={{
@@ -255,16 +266,28 @@ const Register: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    message: '验证码是必填项！'
+                    message: '验证码不能为空'
+                  },
+                  {
+                    len: 6,
+                    message: '验证码长度必须为 6 字符'
                   }
                 ]}
                 onGetCaptcha={async (emailAccount) => {
                   const res = await getCaptchaUsingGet({ emailAccount });
-                  if (res.data && res.code === 0) {
+                  if (res.data && res.code === 20000) {
                     message.success('验证码发送成功');
                     return;
                   }
                 }}
+              />
+              <ProFormText
+                name="invitationCode"
+                fieldProps={{
+                  size: 'large',
+                  prefix: <LinkOutlined />
+                }}
+                placeholder={'邀请码（可选）'}
               />
             </>
           )}

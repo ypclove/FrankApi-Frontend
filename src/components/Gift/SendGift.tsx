@@ -1,9 +1,9 @@
-import { Button, Modal, notification, Tooltip } from 'antd';
-import React, { useEffect, useState } from 'react';
 import gift from '@/../public/assets/Gift.png';
-import ProCard from '@ant-design/pro-card';
-import { Input } from 'antd/lib';
 import { SmileOutlined, SyncOutlined } from '@ant-design/icons';
+import ProCard from '@ant-design/pro-card';
+import { Button, Modal, notification, Tooltip } from 'antd';
+import { Input } from 'antd/lib';
+import React, { useEffect, useState } from 'react';
 
 export type Props = {
   open?: boolean;
@@ -18,7 +18,7 @@ const SendGiftModal: React.FC<Props> = (props) => {
   const randomTexts = [
     '注册即送100金币💰奖励，FrankAPI 接口开放平台为您提供稳定、安全、高效的接口调用服务！',
     '免费领取100金币💰奖励，通过链接注册，FrankAPI 接口开放平台为您提供稳定、安全、高效的接口调用服务！',
-    '通过链接注册，即可获得100坤币💰奖励，FrankAPI 接口开放平台为您提供稳定、安全、高效的接口调用服务！'
+    '通过链接注册，即可获得100金币💰奖励，FrankAPI 接口开放平台为您提供稳定、安全、高效的接口调用服务！'
   ];
   const [giftValue, setGiftValue] = useState(``);
 
@@ -76,7 +76,7 @@ const SendGiftModal: React.FC<Props> = (props) => {
             }}
           >
             <div style={{ marginRight: '20px', fontWeight: 'bold' }}>
-              每邀请一个用户注册，您和被邀请者都将获得 “<strong>100坤币 </strong>💰奖励”
+              每邀请一个用户注册，您和被邀请者都将获得 “<strong>100金币 </strong>💰奖励”
             </div>
             <div
               onClick={() => {

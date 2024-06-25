@@ -1,4 +1,7 @@
 export default [
+  { path: '/', redirect: '/welcome' },
+  { path: '/welcome', name: '欢迎', icon: 'smile', component: './Welcome' },
+  { path: '*', layout: false, component: './404' },
   {
     path: '/user',
     layout: false,
@@ -17,18 +20,18 @@ export default [
       }
     ]
   },
-  { path: '/welcome', name: '欢迎', icon: 'smile', component: './Welcome' },
   {
     path: '/admin',
-    name: '管理页',
-    icon: 'crown',
+    name: '系统管理',
+    icon: 'appstore',
     access: 'canAdmin',
     routes: [
-      { path: '/admin', redirect: '/admin/sub-page' },
-      { path: '/admin/sub-page', name: '二级管理页', component: './Admin' }
+      {
+        name: '用户管理',
+        icon: 'TeamOutlined',
+        path: '/admin/user/list',
+        component: './Admin/UserList'
+      }
     ]
-  },
-  { name: '查询表格', icon: 'table', path: '/list', component: './TableList' },
-  { path: '/', redirect: '/welcome' },
-  { path: '*', layout: false, component: './404' }
+  }
 ];

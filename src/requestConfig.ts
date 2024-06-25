@@ -1,7 +1,7 @@
 ﻿import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
 import { history } from '@umijs/max';
-import { message } from 'antd';
+import { message } from 'antd'; // 与后端约定的响应数据格式
 
 // 与后端约定的响应数据格式
 interface ResponseStructure {
@@ -11,32 +11,27 @@ interface ResponseStructure {
   errorMessage?: string;
 }
 
-/**
- * @name 错误处理
- * pro 自带的错误处理， 可以在这里做自己的改动
- * @doc https://umijs.org/docs/max/request#配置
- */
 export const requestConfig: RequestConfig = {
-  baseURL:
-    process.env.NODE_ENV === 'production' ? 'https://api.qimuu.icu/' : 'http://localhost:7529/',
+  baseURL: 'http://localhost:7529/',
   withCredentials: true,
 
   // 请求拦截器
   requestInterceptors: [
     (config: RequestOptions) => {
-      // 拦截请求配置，进行个性化处理。
-      const url = config?.url?.concat('?token = 123');
-      return { ...config, url };
+      // 拦截请求配置，进行个性化处理
+      // const url = config?.url?.concat('?token = 123');
+      // return { ...config, url };
+      return config;
     }
   ],
 
   // 响应拦截器
   responseInterceptors: [
-    (response) => {
+    (response: any) => {
       // 拦截响应数据，进行个性化处理
       const { data } = response as unknown as ResponseStructure;
       const { code } = data;
-      if (data && code === 0) {
+      if (data && code === 20000) {
         return response;
       } else {
         switch (code) {
@@ -45,7 +40,7 @@ export const requestConfig: RequestConfig = {
               if (location.pathname.includes('/interface_info/')) {
                 break;
               }
-              message.error(data.message);
+              message.error(data.msg);
               history.push('/user/login');
             }
             break;
@@ -55,7 +50,7 @@ export const requestConfig: RequestConfig = {
               location.pathname !== '/' &&
               location.pathname !== '/interface/list'
             ) {
-              message.error(data.message);
+              message.error(data.msg);
               history.push('/user/login');
             }
             break;
@@ -63,7 +58,7 @@ export const requestConfig: RequestConfig = {
             if (location.pathname.includes('/interface_info/')) {
               break;
             }
-            message.error(data.message);
+            message.error(data.msg);
             break;
         }
       }

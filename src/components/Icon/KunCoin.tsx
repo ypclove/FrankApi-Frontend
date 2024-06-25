@@ -1,6 +1,6 @@
-import { KUN_ICON } from '@/constant';
+import { KUN } from '@/constant';
 
 const KunCoin = () => {
-  return <img style={{ width: 28 }} src={KUN_ICON} alt={'浅色'} />;
+  return <img style={{ width: 28 }} src={KUN} alt={'浅色'} />;
 };
 export default KunCoin;

@@ -1,5 +1,5 @@
 import Footer from '@/components/Footer';
-import { LOGO } from '@/constant';
+import { EMAIL_PATTERN, LOGO, USER_ACCOUNT_PATTERN } from '@/constant';
 import {
   getCaptchaUsingGet,
   userEmailLoginUsingPost,
@@ -30,7 +30,7 @@ const Login: React.FC = () => {
     };
   });
   const doLogin = (res: any) => {
-    if (res.data && res.code === 0) {
+    if (res.data && res.code === 20000) {
       message.success('登录成功');
       setTimeout(() => {
         const urlParams = new URL(window.location.href).searchParams;
@@ -125,7 +125,19 @@ const Login: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    message: '账号是必填项！'
+                    message: '账号不能为空'
+                  },
+                  {
+                    min: 4,
+                    message: '账号长度为 4-16 字符'
+                  },
+                  {
+                    max: 16,
+                    message: '账号长度为 4-16 字符'
+                  },
+                  {
+                    pattern: RegExp(USER_ACCOUNT_PATTERN),
+                    message: '账号由数字和字母组成'
                   }
                 ]}
               />
@@ -139,7 +151,15 @@ const Login: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    message: '密码是必填项！'
+                    message: '密码不能为空'
+                  },
+                  {
+                    min: 8,
+                    message: '密码长度为 8-16 字符'
+                  },
+                  {
+                    max: 16,
+                    message: '密码长度为 8-16 字符'
                   }
                 ]}
               />
@@ -157,11 +177,15 @@ const Login: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    message: '邮箱账号是必填项！'
+                    message: '邮箱不能为空'
                   },
                   {
-                    pattern: /^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$/,
-                    message: '不合法的邮箱账号！'
+                    max: 50,
+                    message: '邮箱长度不能超过 50 个字符'
+                  },
+                  {
+                    pattern: RegExp(EMAIL_PATTERN),
+                    message: '邮箱格式不正确'
                   }
                 ]}
               />
@@ -185,12 +209,16 @@ const Login: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    message: '验证码是必填项！'
+                    message: '验证码不能为空'
+                  },
+                  {
+                    len: 6,
+                    message: '验证码长度必须为 6 字符'
                   }
                 ]}
                 onGetCaptcha={async (emailAccount) => {
                   const res = await getCaptchaUsingGet({ emailAccount });
-                  if (res.data && res.code === 0) {
+                  if (res.data && res.code === 20000) {
                     message.success('验证码发送成功');
                     return;
                   }

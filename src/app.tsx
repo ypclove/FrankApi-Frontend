@@ -1,11 +1,12 @@
-import wechat from '@/../public/assets/WeChat.jpg';
 import Footer from '@/components/Footer';
 import SendGift from '@/components/Gift/SendGift';
 import LightColor from '@/components/Icon/LightColor';
 import { Docs, helloWord } from '@/components/RightContent';
 import NoFoundPage from '@/pages/404';
-// import { valueLength } from '@/pages/User/UserInfo';
-import { LOGO } from '@/constant';
+// import {valueLength} from '@/pages/User/UserInfo';
+// import {AvatarDropdown, AvatarName} from './components/RightContent/AvatarDropdown';
+// import {errorConfig} from './requestConfig';
+import { INTERFACE_DEV_DOC, LOGO, WECHAT } from '@/constant';
 import { requestConfig } from '@/requestConfig';
 import { getLoginUserUsingGet } from '@/services/FrankApi/userController';
 import {
@@ -20,30 +21,24 @@ import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history } from '@umijs/max';
 import { FloatButton, message } from 'antd';
 import Settings from '../config/defaultSettings';
-// import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
 
 const loginPath = '/user/login';
 // const whiteList = [loginPath, '/', '/account/center'];
-
-const baiduStatistics = () => {
-  const hm = document.createElement('script');
-  hm.src = 'https://hm.baidu.com/hm.js?1c3c7a064d6a39da5a90bf71821b4a9a';
-  const s = document.getElementsByTagName('script')[0];
-  // @ts-ignore
-  s.parentNode.insertBefore(hm, s);
-};
-
+// const isDev = process.env.NODE_ENV === 'development';
 const stats: InitialState = {
   loginUser: undefined,
   settings: Settings,
   open: false
 };
 
+/**
+ * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
+ * */
 export async function getInitialState(): Promise<InitialState> {
   console.log(`%c${helloWord}`, 'color:#e59de3');
   try {
     const res = await getLoginUserUsingGet();
-    if (res.data && res.code === 0) {
+    if (res.data && res.code === 20000) {
       stats.loginUser = res.data;
     }
   } catch (error) {
@@ -52,6 +47,7 @@ export async function getInitialState(): Promise<InitialState> {
   return stats;
 }
 
+// ProLayout 支持的api https://procomponents.ant.design/components/layout
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
@@ -65,14 +61,14 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         <Footer />
         <FloatButton.Group trigger="hover" style={{ right: 94 }} icon={<BarsOutlined />}>
           <FloatButton
-            tooltip={<img src={wechat} alt="微信 code_nav" width="120" />}
+            tooltip={<img src={WECHAT} alt="微信 code_nav" width="120" />}
             icon={<WechatOutlined />}
           />
           <FloatButton
-            tooltip={'📘 接口在线文档'}
+            tooltip={'📘接口在线文档'}
             icon={<FileTextOutlined />}
             onClick={() => {
-              location.href = 'https://doc.qimuu.icu/';
+              location.href = INTERFACE_DEV_DOC;
             }}
           />
           <FloatButton
@@ -128,7 +124,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     // avatarProps: {
     //   src: valueLength(initialState?.loginUser?.userAvatar)
     //     ? initialState?.loginUser?.userAvatar
-    //     : 'https://img.qimuu.icu/typory/notLogin.png',
+    //     : '',
     //   title: initialState?.loginUser ? <AvatarName /> : '游客',
     //   render: (_, avatarChildren) => {
     //     return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
@@ -136,7 +132,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     // },
     onPageChange: () => {
       // 百度统计
-      baiduStatistics();
+      // baiduStatistics();
       const { location } = history;
       // if (!whiteList.includes(location.pathname)) {
       //   getInitialState();
@@ -177,6 +173,12 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     ...initialState?.settings
   };
 };
+
+/**
+ * @name request 配置，可以配置错误处理
+ * 它基于 axios 和 ahooks 的 useRequest 提供了一套统一的网络请求和错误处理方案。
+ * @doc https://umijs.org/docs/max/request#配置
+ */
 
 /**
  * @name request 配置，可以配置错误处理

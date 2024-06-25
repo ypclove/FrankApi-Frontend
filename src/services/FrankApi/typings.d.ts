@@ -4,39 +4,34 @@ declare namespace API {
     userId?: number;
   };
 
-  type BaseResponseboolean = {
+  type BaseResponseBoolean = {
     code?: number;
     data?: boolean;
-    message?: string;
+    msg?: string;
   };
 
   type BaseResponseListUserVO = {
     code?: number;
     data?: UserVO[];
-    message?: string;
+    msg?: string;
   };
 
-  type BaseResponselong = {
+  type BaseResponseLong = {
     code?: number;
     data?: number;
-    message?: string;
+    msg?: string;
   };
 
   type BaseResponsePageUserVO = {
     code?: number;
     data?: PageUserVO;
-    message?: string;
+    msg?: string;
   };
 
   type BaseResponseUserVO = {
     code?: number;
     data?: UserVO;
-    message?: string;
-  };
-
-  type deleteUserUsingPOSTParams = {
-    /** userId */
-    userId?: number;
+    msg?: string;
   };
 
   type getCaptchaUsingGETParams = {
@@ -56,26 +51,13 @@ declare namespace API {
 
   type listUserByPageUsingGETParams = {
     current?: number;
-    gender?: string;
+    gender?: number;
     id?: number;
     pageSize?: number;
     sortField?: string;
     sortOrder?: string;
     userAccount?: string;
-    userName?: string;
-    userRole?: string;
-  };
-
-  type listUserUsingGETParams = {
-    current?: number;
-    gender?: string;
-    id?: number;
-    pageSize?: number;
-    sortField?: string;
-    sortOrder?: string;
-    userAccount?: string;
-    userName?: string;
-    userRole?: string;
+    userRole?: number;
   };
 
   type normalUserUsingPOSTParams = {
@@ -102,62 +84,90 @@ declare namespace API {
   };
 
   type UserAddRequest = {
-    balance?: number;
-    gender?: string;
+    /** 用户性别 */
+    gender?: number;
+    /** 用户账号 */
     userAccount?: string;
-    userAvatar?: string;
-    userName?: string;
+    /** 密码 */
     userPassword?: string;
-    userRole?: string;
+    /** 用户角色 */
+    userRole?: number;
   };
 
   type UserBindEmailRequest = {
+    /** 验证码 */
     captcha?: string;
+    /** 邮箱 */
     emailAccount?: string;
   };
 
   type UserEmailLoginRequest = {
+    /** 验证码 */
     captcha?: string;
+    /** 邮箱 */
     emailAccount?: string;
   };
 
   type UserEmailRegisterRequest = {
     agreeToAnAgreement?: string;
+    /** 验证码 */
     captcha?: string;
+    /** 邮箱 */
     emailAccount?: string;
+    /** 邀请码（可选） */
     invitationCode?: string;
-    userName?: string;
   };
 
   type UserLoginRequest = {
+    /** 用户账号 */
     userAccount?: string;
+    /** 密码 */
     userPassword?: string;
+  };
+
+  type UserQueryRequest = {
+    current?: number;
+    gender?: number;
+    id?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+    userAccount?: string;
+    userRole?: number;
   };
 
   type UserRegisterRequest = {
     agreeToAnAgreement?: string;
+    /** 确认密码 */
     checkPassword?: string;
+    /** 邀请码（可选） */
     invitationCode?: string;
+    /** 用户账号 */
     userAccount?: string;
-    userName?: string;
+    /** 密码 */
     userPassword?: string;
   };
 
   type UserUnBindEmailRequest = {
+    /** 验证码 */
     captcha?: string;
+    /** 邮箱 */
     emailAccount?: string;
   };
 
   type UserUpdateRequest = {
+    /** 积分 */
     balance?: number;
-    gender?: string;
+    /** 用户性别 */
+    gender?: number;
+    /** 用户 Id */
     id?: number;
-    status?: number;
+    /** 用户账号 */
     userAccount?: string;
-    userAvatar?: string;
-    userName?: string;
+    /** 密码 */
     userPassword?: string;
-    userRole?: string;
+    /** 用户角色 */
+    userRole?: number;
   };
 
   type UserVO = {
@@ -165,7 +175,7 @@ declare namespace API {
     balance?: number;
     createTime?: string;
     email?: string;
-    gender?: string;
+    gender?: number;
     id?: number;
     invitationCode?: string;
     secretKey?: string;
@@ -174,6 +184,6 @@ declare namespace API {
     userAccount?: string;
     userAvatar?: string;
     userName?: string;
-    userRole?: string;
+    userRole?: number;
   };
 }

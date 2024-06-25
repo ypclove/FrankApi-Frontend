@@ -1,4 +1,4 @@
-import { DEV_DOC } from '@/constant';
+import { INTERFACE_DEV_DOC } from '@/constant';
 import { PlusOutlined } from '@ant-design/icons';
 import '@umijs/max';
 import { Button } from 'antd';
@@ -17,10 +17,10 @@ export const Docs = () => {
       className="anticon"
       style={{ fontSize: 14, fontWeight: 'bold' }}
       onClick={() => {
-        window.open(DEV_DOC, '_blank');
+        window.open(INTERFACE_DEV_DOC, '_blank');
       }}
     >
-      📘 开发者文档
+      📘接口开发文档
     </span>
   );
 };
