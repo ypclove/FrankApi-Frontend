@@ -63,7 +63,6 @@ yarn-error.log*
 _roadhog-api-doc
 /coverage
 yarn.lock
-package-lock.json
 *bak
 .history
 functions/*

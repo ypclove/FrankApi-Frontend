@@ -4,7 +4,7 @@ import {request} from '@umijs/max';
 
 /** addUser POST /api/user/add */
 export async function addUserUsingPost(body: API.UserAddRequest, options?: { [key: string]: any }) {
-  return request<API.BaseResponseLong>('/api/user/add', {
+  return request<API.BaseResponselong>('/api/user/add', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -14,12 +14,12 @@ export async function addUserUsingPost(body: API.UserAddRequest, options?: { [ke
   });
 }
 
-/** banUser POST /api/user/ban */
+/** banUser POST /api/user/ban/${param0} */
 export async function banUserUsingPost(
   userId: number | undefined,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseBoolean>(`/api/user/ban/${userId}`, {
+  return request<API.BaseResponseboolean>(`/api/user/ban/${userId}`, {
     method: 'POST',
     ...(options || {})
   });
@@ -40,12 +40,12 @@ export async function userBindEmailUsingPost(
   });
 }
 
-/** deleteUser DELETE /api/user/delete */
+/** deleteUser DELETE /api/user/delete/${userId} */
 export async function deleteUserUsingDelete(
   userId: number | undefined,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseBoolean>(`/api/user/delete/${userId}/`, {
+  return request<API.BaseResponseboolean>(`/api/user/delete/${userId}/`, {
     method: 'DELETE',
     ...(options || {})
   });
@@ -71,7 +71,7 @@ export async function userEmailRegisterUsingPost(
   body: API.UserEmailRegisterRequest,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseLong>('/api/user/email/register', {
+  return request<API.BaseResponselong>('/api/user/email/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -81,30 +81,31 @@ export async function userEmailRegisterUsingPost(
   });
 }
 
-/** getUserById GET /api/user/get */
+/** getUserById GET /api/user/get/${param0} */
 export async function getUserByIdUsingGet(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getUserByIdUsingGETParams,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseUserVO>('/api/user/get', {
+  const { userId: param0, ...queryParams } = params;
+  return request<API.BaseResponseUserVO>(`/api/user/get/${param0}`, {
     method: 'GET',
-    params: {
-      ...params
-    },
+    params: { ...queryParams },
     ...(options || {})
   });
 }
 
 /** getUserByInvitationCode POST /api/user/get/invitationCode */
 export async function getUserByInvitationCodeUsingPost(
-  params: API.getUserByInvitationCodeUsingPOSTParams,
+  body: string,
   options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseUserVO>('/api/user/get/invitationCode', {
     method: 'POST',
-    params: {
-      ...params
+    headers: {
+      'Content-Type': 'application/json'
     },
+    data: body,
     ...(options || {})
   });
 }
@@ -119,10 +120,11 @@ export async function getLoginUserUsingGet(options?: { [key: string]: any }) {
 
 /** getCaptcha GET /api/user/getCaptcha */
 export async function getCaptchaUsingGet(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getCaptchaUsingGETParams,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseBoolean>('/api/user/getCaptcha', {
+  return request<API.BaseResponseboolean>('/api/user/getCaptcha', {
     method: 'GET',
     params: {
       ...params
@@ -131,24 +133,10 @@ export async function getCaptchaUsingGet(
   });
 }
 
-/** listUser GET /api/user/list */
-export async function listUserUsingGet(
-  body: API.UserQueryRequest,
-  options?: { [key: string]: any }
-) {
-  return request<API.BaseResponseListUserVO>('/api/user/list', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    data: body,
-    ...(options || {})
-  });
-}
-
-/** listUserByPage GET /api/user/list/page */
-export async function listUserByPageUsingGet(
-  params: API.listUserByPageUsingGETParams,
+/** getUserListByPage GET /api/user/list/page */
+export async function getUserListByPageUsingGet(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getUserListByPageUsingGETParams,
   options?: { [key: string]: any }
 ) {
   return request<API.BaseResponsePageUserVO>('/api/user/list/page', {
@@ -177,18 +165,18 @@ export async function userLoginUsingPost(
 
 /** userLogout POST /api/user/logout */
 export async function userLogoutUsingPost(options?: { [key: string]: any }) {
-  return request<API.BaseResponseBoolean>('/api/user/logout', {
+  return request<API.BaseResponseboolean>('/api/user/logout', {
     method: 'POST',
     ...(options || {})
   });
 }
 
-/** normalUser POST /api/user/normal */
+/** normalUser POST /api/user/normal/${param0} */
 export async function normalUserUsingPost(
   userId: number | undefined,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseBoolean>(`/api/user/normal/${userId}`, {
+  return request<API.BaseResponseboolean>(`/api/user/normal/${userId}`, {
     method: 'POST',
     ...(options || {})
   });
@@ -199,7 +187,7 @@ export async function userRegisterUsingPost(
   body: API.UserRegisterRequest,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseLong>('/api/user/register', {
+  return request<API.BaseResponselong>('/api/user/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -229,20 +217,12 @@ export async function updateUserUsingPost(
   body: API.UserUpdateRequest,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseBoolean>('/api/user/update', {
+  return request<API.BaseResponseboolean>('/api/user/update', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     data: body,
-    ...(options || {})
-  });
-}
-
-/** updateVoucher POST /api/user/update/voucher */
-export async function updateVoucherUsingPost(options?: { [key: string]: any }) {
-  return request<API.BaseResponseUserVO>('/api/user/update/voucher', {
-    method: 'POST',
     ...(options || {})
   });
 }

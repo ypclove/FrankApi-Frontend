@@ -1,24 +1,36 @@
 declare namespace API {
   type banUserUsingPOSTParams = {
     /** userId */
-    userId?: number;
+    userId: number;
   };
 
-  type BaseResponseBoolean = {
+  type BaseResponseboolean = {
     code?: number;
     data?: boolean;
     msg?: string;
   };
 
-  type BaseResponseListUserVO = {
+  type BaseResponseInterfaceInfo = {
     code?: number;
-    data?: UserVO[];
+    data?: InterfaceInfo;
     msg?: string;
   };
 
-  type BaseResponseLong = {
+  type BaseResponselong = {
     code?: number;
     data?: number;
+    msg?: string;
+  };
+
+  type BaseResponseobject = {
+    code?: number;
+    data?: Record<string, any>;
+    msg?: string;
+  };
+
+  type BaseResponsePageInterfaceInfo = {
+    code?: number;
+    data?: PageInterfaceInfo;
     msg?: string;
   };
 
@@ -34,25 +46,39 @@ declare namespace API {
     msg?: string;
   };
 
+  type deleteInterfaceUsingDELETEParams = {
+    /** interfaceId */
+    interfaceId: number;
+  };
+
+  type deleteUserUsingDELETEParams = {
+    /** userId */
+    userId: number;
+  };
+
+  type Field = {
+    fieldName?: string;
+    value?: string;
+  };
+
   type getCaptchaUsingGETParams = {
     /** emailAccount */
     emailAccount?: string;
   };
 
+  type getInterfaceInfoByIdUsingGETParams = {
+    /** interfaceId */
+    interfaceId: number;
+  };
+
   type getUserByIdUsingGETParams = {
-    /** id */
-    id?: number;
+    /** userId */
+    userId: number;
   };
 
-  type getUserByInvitationCodeUsingPOSTParams = {
-    /** invitationCode */
-    invitationCode?: string;
-  };
-
-  type listUserByPageUsingGETParams = {
+  type getUserListByPageUsingGETParams = {
     current?: number;
     gender?: number;
-    id?: number;
     pageSize?: number;
     sortField?: string;
     sortOrder?: string;
@@ -60,14 +86,148 @@ declare namespace API {
     userRole?: number;
   };
 
+  type InterfaceInfo = {
+    createTime?: string;
+    description?: string;
+    id?: number;
+    isDelete?: boolean;
+    method?: number;
+    name?: string;
+    reduceScore?: number;
+    requestExample?: string;
+    requestHeader?: string;
+    requestParams?: string;
+    responseHeader?: string;
+    responseParams?: string;
+    returnFormat?: string;
+    status?: number;
+    totalInvokes?: number;
+    updateTime?: string;
+    url?: string;
+    userId?: number;
+  };
+
+  type InterfaceInfoAddRequest = {
+    /** 接口描述 */
+    description?: string;
+    /** 请求方法 */
+    method?: number;
+    /** 接口名称 */
+    name?: string;
+    /** 减少积分个数 */
+    reduceScore?: number;
+    /** 请求示例 */
+    requestExample?: string;
+    /** 请求头 */
+    requestHeader?: string;
+    /** 接口请求参数 */
+    requestParams?: RequestParamsField[];
+    /** 响应头 */
+    responseHeader?: string;
+    /** 接口响应参数 */
+    responseParams?: ResponseParamsField[];
+    /** 接口返回格式 */
+    returnFormat?: string;
+    /** 接口地址 */
+    url?: string;
+  };
+
+  type InterfaceInfoUpdateRequest = {
+    /** 接口描述 */
+    description?: string;
+    /** 接口 Id */
+    id?: number;
+    /** 请求方法 */
+    method?: number;
+    /** 接口名称 */
+    name?: string;
+    /** 减少积分个数 */
+    reduceScore?: number;
+    /** 请求示例 */
+    requestExample?: string;
+    /** 请求头 */
+    requestHeader?: string;
+    /** 接口请求参数 */
+    requestParams?: RequestParamsField[];
+    /** 响应头 */
+    responseHeader?: string;
+    /** 接口响应参数 */
+    responseParams?: ResponseParamsField[];
+    /** 接口返回格式 */
+    returnFormat?: string;
+    /** 接口状态 */
+    status?: number;
+    /** 接口地址 */
+    url?: string;
+  };
+
+  type InvokeRequest = {
+    /** 接口 Id */
+    id?: number;
+    /** 接口请求参数 */
+    requestParams?: Field[];
+    /** 用户请求参数 */
+    userRequestParams?: string;
+  };
+
+  type listInterfaceInfoByPageUsingGETParams = {
+    current?: number;
+    description?: string;
+    method?: number;
+    name?: string;
+    pageSize?: number;
+    reduceScore?: number;
+    'responseParams[0].desc'?: string;
+    'responseParams[0].fieldName'?: string;
+    'responseParams[0].id'?: string;
+    'responseParams[0].type'?: string;
+    returnFormat?: string;
+    sortField?: string;
+    sortOrder?: string;
+    status?: number;
+    url?: string;
+    userId: number;
+  };
+
+  type listInterfaceInfoBySearchTextPageUsingGETParams = {
+    current?: number;
+    pageSize?: number;
+    searchText?: string;
+    sortField?: string;
+    sortOrder?: string;
+  };
+
   type normalUserUsingPOSTParams = {
     /** userId */
-    userId?: number;
+    userId: number;
+  };
+
+  type offlineInterfaceInfoUsingPOSTParams = {
+    /** interfaceId */
+    interfaceId: number;
+  };
+
+  type onlineInterfaceInfoUsingPOSTParams = {
+    /** interfaceId */
+    interfaceId: number;
   };
 
   type OrderItem = {
     asc?: boolean;
     column?: string;
+  };
+
+  type PageInterfaceInfo = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: InterfaceInfo[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
   };
 
   type PageUserVO = {
@@ -81,6 +241,21 @@ declare namespace API {
     searchCount?: boolean;
     size?: number;
     total?: number;
+  };
+
+  type RequestParamsField = {
+    desc?: string;
+    fieldName?: string;
+    id?: string;
+    required?: string;
+    type?: string;
+  };
+
+  type ResponseParamsField = {
+    desc?: string;
+    fieldName?: string;
+    id?: string;
+    type?: string;
   };
 
   type UserAddRequest = {
@@ -125,19 +300,7 @@ declare namespace API {
     userPassword?: string;
   };
 
-  type UserQueryRequest = {
-    current?: number;
-    gender?: number;
-    id?: number;
-    pageSize?: number;
-    sortField?: string;
-    sortOrder?: string;
-    userAccount?: string;
-    userRole?: number;
-  };
-
   type UserRegisterRequest = {
-    agreeToAnAgreement?: string;
     /** 确认密码 */
     checkPassword?: string;
     /** 邀请码（可选） */
@@ -185,5 +348,20 @@ declare namespace API {
     userAvatar?: string;
     userName?: string;
     userRole?: number;
+  };
+
+  type ProductInfo = {
+    addPoints?: number;
+    createTime?: string;
+    description?: string;
+    expirationTime?: string;
+    id?: number;
+    isDelete?: number;
+    name?: string;
+    productType?: string;
+    status?: number;
+    total?: number;
+    updateTime?: string;
+    userId?: number;
   };
 }

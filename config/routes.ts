@@ -24,13 +24,19 @@ export default [
     path: '/admin',
     name: '系统管理',
     icon: 'appstore',
-    access: 'canAdmin',
+    // access: 'canAdmin',
     routes: [
       {
         name: '用户管理',
         icon: 'TeamOutlined',
         path: '/admin/user/list',
         component: './Admin/UserList'
+      },
+      {
+        name: '接口管理',
+        icon: 'ApiOutlined',
+        path: '/admin/interface/list',
+        component: './Admin/InterfaceInfoList'
       }
     ]
   }

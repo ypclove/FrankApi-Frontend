@@ -1,29 +1,29 @@
 export const InterfaceRequestMethodEnum: any = {
-  GET: 'blue',
-  POST: 'red',
-  PUT: 'green',
-  DELETE: 'orange'
+  1: 'blue',
+  2: 'red',
+  3: 'green',
+  4: 'orange'
 };
 
 export const InterfaceStatusEnum: any = {
   0: {
-    text: '审核中',
-    status: 'default'
-  },
-  2: {
-    text: '已下线',
-    status: 'error'
+    text: '关闭',
+    status: 'Error'
   },
   1: {
-    text: '已上线',
-    status: 'processing'
+    text: '开启',
+    status: 'Success'
+  },
+  2: {
+    text: '审核中',
+    status: 'Processing'
   }
 };
 
 export const statusEnum: any = {
-  0: '审核中',
-  1: '已上线',
-  2: '已下线'
+  0: '关闭',
+  1: '开启',
+  2: '审核中'
 };
 
 export const productTypeColorEnum: any = {
