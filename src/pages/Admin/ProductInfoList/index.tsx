@@ -4,7 +4,7 @@ import ProductInfoModalFormColumns, {
 import ModalForm from '@/pages/Admin/Components/ModalForm';
 import {
   addProductUsingPost,
-  deleteProductUsingPost,
+  deleteProductUsingDelete,
   getProductListByPageUsingGet,
   offlineProductInfoUsingPost,
   onlineProductInfoUsingPost,
@@ -123,7 +123,7 @@ const ProductInfoList: React.FC = () => {
   const handleRemove = async (productId: number | undefined) => {
     const hide = message.loading('正在删除...');
     try {
-      const res = await deleteProductUsingPost(productId);
+      const res = await deleteProductUsingDelete(productId);
       hide();
       if (res.data) {
         message.success('删除成功');

@@ -2,11 +2,17 @@
 /* eslint-disable */
 // API 更新时间：
 // API 唯一标识：
+import * as dailyCheckInController from './dailyCheckInController';
+import * as fileController from './fileController';
 import * as interfaceInfoController from './interfaceInfoController';
 import * as productInfoController from './productInfoController';
+import * as productOrderController from './productOrderController';
 import * as userController from './userController';
 export default {
+  dailyCheckInController,
+  fileController,
   interfaceInfoController,
   productInfoController,
+  productOrderController,
   userController,
 };

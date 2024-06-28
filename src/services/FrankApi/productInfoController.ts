@@ -17,8 +17,8 @@ export async function addProductUsingPost(
   });
 }
 
-/** deleteProduct POST /api/productInfo/delete/${productId} */
-export async function deleteProductUsingPost(
+/** deleteProduct DELETE /api/productInfo/delete/${productId} */
+export async function deleteProductUsingDelete(
   productId: number | undefined,
   options?: { [key: string]: any }
 ) {
@@ -28,7 +28,7 @@ export async function deleteProductUsingPost(
   });
 }
 
-/** getProductById GET /api/productInfo/get/${productId} */
+/** getProductById GET /api/productInfo/get/${param0} */
 export async function getProductByIdUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getProductByIdUsingGETParams,
