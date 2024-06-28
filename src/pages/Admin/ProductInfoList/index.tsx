@@ -1,16 +1,15 @@
-import InterfaceInfoColumns, {
-  InterfaceInfoModalFormColumns
-} from '@/pages/Admin/Columns/InterfaceInfoColumns';
-
+import ProductInfoModalFormColumns, {
+  ProductInfoColumns
+} from '@/pages/Admin/Columns/ProductInfoColumns';
 import ModalForm from '@/pages/Admin/Components/ModalForm';
 import {
-  addInterfaceUsingPost,
-  deleteInterfaceUsingDelete,
-  getInterfaceListByPageUsingGet,
-  offlineInterfaceUsingPost,
-  onlineInterfaceUsingPost,
-  updateInterfaceUsingPost
-} from '@/services/FrankApi/interfaceInfoController';
+  addProductUsingPost,
+  deleteProductUsingPost,
+  getProductListByPageUsingGet,
+  offlineProductInfoUsingPost,
+  onlineProductInfoUsingPost,
+  updateProductUsingPost
+} from '@/services/FrankApi/productInfoController';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
@@ -18,31 +17,23 @@ import '@umijs/max';
 import { Button, Card, message, Popconfirm } from 'antd';
 import React, { useRef, useState } from 'react';
 
-const InterfaceInfoList: React.FC = () => {
-  /**
-   * 新建窗口的弹窗
-   */
+const ProductInfoList: React.FC = () => {
   const [createModalOpen, handleModalOpen] = useState<boolean>(false);
-  /**
-   * 分布更新窗口的弹窗
-   */
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<API.InterfaceInfo>();
+  const [currentRow, setCurrentRow] = useState<API.ProductInfo>();
 
   /**
-   * 创建接口
-   * TODO: 创建失败会连续报两次错
-   * @param fields 接口创建请求
+   * 创建产品
+   * @param fields 创建产品请求
    */
-  const handleAdd = async (fields: API.InterfaceInfoAddRequest) => {
-    const hide = message.loading('正在创建');
+  const handleAdd = async (fields: API.ProductInfoAddRequest) => {
+    const hide = message.loading('正在添加中...');
     try {
-      const res = await addInterfaceUsingPost({
+      const res = await addProductUsingPost({
         ...fields
       });
-      // 确保在返回消息之前隐藏加载提示
       hide();
       if (res.data && res.code === 20000) {
         message.success('添加成功');
@@ -60,99 +51,81 @@ const InterfaceInfoList: React.FC = () => {
   };
 
   /**
-   * 更新接口
-   * TODO: 更新失败会连续报两次错
-   * @param fields 接口更新请求
+   * 更新产品
+   * @param fields 更新产品请求
    */
-  const handleUpdate = async (fields: API.InterfaceInfoUpdateRequest) => {
-    const hide = message.loading('修改中');
+  const handleUpdate = async (fields: API.ProductInfoUpdateRequest) => {
+    const hide = message.loading('正在修改中...');
     try {
-      if (fields) {
-        if (fields.responseParams) {
-          if (typeof fields.responseParams === 'string') {
-            const parseValue = JSON.parse(fields.responseParams);
-            fields.responseParams = [...parseValue];
-          }
-        } else {
-          fields.responseParams = [];
-        }
-        if (fields.requestParams) {
-          if (typeof fields.requestParams === 'string') {
-            const parseValue = JSON.parse(fields.requestParams);
-            fields.requestParams = [...parseValue];
-          }
-        } else {
-          fields.requestParams = [];
-        }
-        const res = await updateInterfaceUsingPost({ id: currentRow?.id, ...fields });
-        hide();
-        if (res.data && res.code === 20000) {
-          message.success('修改成功');
-          actionRef.current?.reload();
-          return true;
-        } else {
-          message.error(res.msg);
-          return false;
-        }
+      const res = await updateProductUsingPost({ id: currentRow?.id, ...fields });
+      hide();
+      if (res.data && res.code === 20000) {
+        message.success('修改成功');
+        actionRef.current?.reload();
+        return true;
+      } else {
+        message.error(res.msg);
+        return false;
       }
     } catch (error: any) {
       hide();
       message.error('修改失败' + error.message);
+      return false;
     }
   };
 
   /**
-   * 开启接口
-   * @param interfaceId 接口 Id
+   * 上架产品
+   * @param productId 产品 Id
    */
-  const handleOnline = async (interfaceId: number | undefined) => {
-    const hide = message.loading('开启中');
+  const handleOnline = async (productId: number | undefined) => {
+    const hide = message.loading('上架中...');
     try {
-      const res = await onlineInterfaceUsingPost(interfaceId);
+      const res = await onlineProductInfoUsingPost(productId);
       hide();
-      if (res.data && res.code === 20000) {
-        message.success('开启成功');
+      if (res.data) {
+        message.success('上架成功');
         actionRef.current?.reload();
       } else {
         message.error(res.msg);
       }
     } catch (error: any) {
       hide();
-      message.error(error.message);
+      message.error('上架失败', error.message);
     }
   };
 
   /**
-   * 关闭接口
-   * @param interfaceId 接口 Id
+   * 下架产品
+   * @param productId 产品 Id
    */
-  const handleOffline = async (interfaceId: number | undefined) => {
-    const hide = message.loading('关闭中');
+  const handleOffline = async (productId: number | undefined) => {
+    const hide = message.loading('下架中...');
     try {
-      const res = await offlineInterfaceUsingPost(interfaceId);
+      const res = await offlineProductInfoUsingPost(productId);
       hide();
-      if (res.data && res.code === 20000) {
-        message.success('关闭成功');
+      if (res.data) {
+        message.success('下架成功');
         actionRef.current?.reload();
       } else {
         message.error(res.msg);
       }
     } catch (error: any) {
       hide();
-      message.error(error.message);
+      message.error('下架失败', error.message);
     }
   };
 
   /**
-   * 删除接口
-   * @param interfaceId 接口 Id
+   * 删除产品
+   * @param productId 产品 Id
    */
-  const handleRemove = async (interfaceId: number | undefined) => {
-    const hide = message.loading('正在删除');
+  const handleRemove = async (productId: number | undefined) => {
+    const hide = message.loading('正在删除...');
     try {
-      const res = await deleteInterfaceUsingDelete(interfaceId);
+      const res = await deleteProductUsingPost(productId);
       hide();
-      if (res.data && res.code === 20000) {
+      if (res.data) {
         message.success('删除成功');
         actionRef.current?.reload();
       } else {
@@ -168,14 +141,15 @@ const InterfaceInfoList: React.FC = () => {
     message.success('取消成功');
   };
 
-  const columns: ProColumns<API.InterfaceInfo>[] = [
-    ...InterfaceInfoColumns,
+  const columns: ProColumns<API.ProductInfo>[] = [
+    ...ProductInfoColumns,
     {
       title: '操作',
-      align: 'center',
-      width: 180, // 设置列宽度
       dataIndex: 'option',
       valueType: 'option',
+      align: 'center',
+      // 设置列宽度
+      width: 150,
       render: (_, record) => [
         <Button
           key="update"
@@ -191,59 +165,59 @@ const InterfaceInfoList: React.FC = () => {
         record.status === 0 ? (
           <Popconfirm
             key={'Normal'}
-            title="请确认是否开启该接口？"
+            title="请确认是否上架该产品？"
             onConfirm={() => handleOnline(record.id)}
             onCancel={cancel}
             okText="是"
             cancelText="否"
           >
             <Button
+              type="primary"
               danger
-              key="auditing"
-              type="dashed"
               size={'small'}
+              key="auditing"
               onClick={async () => {
                 setCurrentRow(record);
               }}
             >
-              开启
+              上架
             </Button>
           </Popconfirm>
         ) : null,
         record.status === 1 ? (
           <Popconfirm
             key={'Normal'}
-            title="请确认是否关闭该接口？"
+            title="请确认是否下架该产品？"
             onConfirm={() => handleOffline(record.id)}
             onCancel={cancel}
             okText="是"
             cancelText="否"
           >
             <Button
-              danger
-              key="online"
-              type="primary"
+              type="dashed"
               size={'small'}
+              key="offline"
+              style={{ color: 'red' }}
               onClick={async () => {
                 setCurrentRow(record);
               }}
             >
-              关闭
+              下架
             </Button>
           </Popconfirm>
         ) : null,
         <Popconfirm
           key={'Delete'}
-          title="请确认是否删除该接口？"
+          title="请确认是否删除该产品？"
           onConfirm={() => handleRemove(record.id)}
           onCancel={cancel}
           okText="是"
           cancelText="否"
         >
           <Button
-            danger
             key="Remove"
             type="primary"
+            danger
             size={'small'}
             onClick={async () => {
               setCurrentRow(record);
@@ -255,10 +229,11 @@ const InterfaceInfoList: React.FC = () => {
       ]
     }
   ];
+  // @ts-ignore
   return (
     <Card>
-      <ProTable<API.InterfaceInfo>
-        headerTitle={'接口管理'}
+      <ProTable<API.ProductInfo>
+        headerTitle={'商品管理'}
         actionRef={actionRef}
         rowKey="key"
         loading={loading}
@@ -282,7 +257,7 @@ const InterfaceInfoList: React.FC = () => {
         }}
         request={async (params) => {
           setLoading(true);
-          const res = await getInterfaceListByPageUsingGet({ userId: 0, ...params });
+          const res = await getProductListByPageUsingGet({ ...params });
           if (res.data) {
             setLoading(false);
             return {
@@ -301,46 +276,48 @@ const InterfaceInfoList: React.FC = () => {
         columns={columns}
       />
       <ModalForm
-        title={'添加接口'}
+        title={'添加商品'}
         value={{}}
         open={() => {
           return createModalOpen;
         }}
         onOpenChange={handleModalOpen}
         onSubmit={async (value) => {
-          const success = await handleAdd(value as API.InterfaceInfoAddRequest);
+          const success = await handleAdd(value as API.ProductInfo);
           if (success) {
             handleModalOpen(false);
             if (actionRef.current) {
-              actionRef.current?.reload();
+              actionRef?.current.reload();
             }
           }
         }}
         onCancel={() => handleModalOpen(false)}
-        columns={InterfaceInfoModalFormColumns}
-        width={'840px'}
+        columns={ProductInfoModalFormColumns}
+        width={'480px'}
+        size={'large'}
       />
       <ModalForm
-        title={'修改接口'}
+        title={'修改商品信息'}
         open={() => {
           return updateModalOpen;
         }}
         value={currentRow}
         onOpenChange={handleUpdateModalOpen}
         onSubmit={async (value) => {
-          const success = await handleUpdate(value as API.InterfaceInfoUpdateRequest);
+          const success = await handleUpdate(value as API.ProductInfo);
           if (success) {
             handleUpdateModalOpen(false);
             if (actionRef.current) {
-              actionRef.current?.reload();
+              actionRef?.current.reload();
             }
           }
         }}
         onCancel={() => handleUpdateModalOpen(false)}
-        columns={InterfaceInfoModalFormColumns}
-        width={'840px'}
+        columns={ProductInfoModalFormColumns}
+        width={'480px'}
+        size={'large'}
       />
     </Card>
   );
 };
-export default InterfaceInfoList;
+export default ProductInfoList;

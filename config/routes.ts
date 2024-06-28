@@ -37,6 +37,12 @@ export default [
         icon: 'ApiOutlined',
         path: '/admin/interface/list',
         component: './Admin/InterfaceInfoList'
+      },
+      {
+        name: '商品管理',
+        icon: 'table',
+        path: '/admin/productInfo/list',
+        component: './Admin/ProductInfoList'
       }
     ]
   }

@@ -17,7 +17,7 @@ export async function addInterfaceUsingPost(
   });
 }
 
-/** deleteInterface DELETE /api/interfaceInfo/delete/${interfaceId} */
+/** deleteInterface DELETE /api/interfaceInfo/delete/${param0} */
 export async function deleteInterfaceUsingDelete(
   interfaceId: number | undefined,
   options?: { [key: string]: any }
@@ -28,10 +28,10 @@ export async function deleteInterfaceUsingDelete(
   });
 }
 
-/** getInterfaceInfoById GET /api/interfaceInfo/get/${param0} */
-export async function getInterfaceInfoByIdUsingGet(
+/** getInterfaceById GET /api/interfaceInfo/get/${param0} */
+export async function getInterfaceByIdUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getInterfaceInfoByIdUsingGETParams,
+  params: API.getInterfaceByIdUsingGETParams,
   options?: { [key: string]: any }
 ) {
   const { interfaceId: param0, ...queryParams } = params;
@@ -42,10 +42,10 @@ export async function getInterfaceInfoByIdUsingGet(
   });
 }
 
-/** listInterfaceInfoBySearchTextPage GET /api/interfaceInfo/get/searchText */
-export async function listInterfaceInfoBySearchTextPageUsingGet(
+/** getInterfaceListBySearchTextPage GET /api/interfaceInfo/get/searchText */
+export async function getInterfaceListBySearchTextPageUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.listInterfaceInfoBySearchTextPageUsingGETParams,
+  params: API.getInterfaceListBySearchTextPageUsingGETParams,
   options?: { [key: string]: any }
 ) {
   return request<API.BaseResponsePageInterfaceInfo>('/api/interfaceInfo/get/searchText', {
@@ -72,9 +72,10 @@ export async function invokeInterfaceUsingPost(
   });
 }
 
-/** listInterfaceInfoByPage GET /api/interfaceInfo/list/page */
+/** getInterfaceListByPage GET /api/interfaceInfo/list/page */
 export async function getInterfaceListByPageUsingGet(
-  params: API.listInterfaceInfoByPageUsingGETParams,
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getInterfaceListByPageUsingGETParams,
   options?: { [key: string]: any }
 ) {
   return request<API.BaseResponsePageInterfaceInfo>('/api/interfaceInfo/list/page', {
@@ -86,8 +87,8 @@ export async function getInterfaceListByPageUsingGet(
   });
 }
 
-/** offlineInterfaceInfo POST /api/interfaceInfo/offline/${interfaceId} */
-export async function offlineInterfaceInfoUsingPost(
+/** offlineInterface POST /api/interfaceInfo/offline/${param0} */
+export async function offlineInterfaceUsingPost(
   interfaceId: number | undefined,
   options?: { [key: string]: any }
 ) {
@@ -97,8 +98,8 @@ export async function offlineInterfaceInfoUsingPost(
   });
 }
 
-/** onlineInterfaceInfo POST /api/interfaceInfo/online/${interfaceId} */
-export async function onlineInterfaceInfoUsingPost(
+/** onlineInterface POST /api/interfaceInfo/online/${param0} */
+export async function onlineInterfaceUsingPost(
   interfaceId: number | undefined,
   options?: { [key: string]: any }
 ) {

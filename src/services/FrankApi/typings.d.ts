@@ -34,9 +34,21 @@ declare namespace API {
     msg?: string;
   };
 
+  type BaseResponsePageProductInfo = {
+    code?: number;
+    data?: PageProductInfo;
+    msg?: string;
+  };
+
   type BaseResponsePageUserVO = {
     code?: number;
     data?: PageUserVO;
+    msg?: string;
+  };
+
+  type BaseResponseProductInfo = {
+    code?: number;
+    data?: ProductInfo;
     msg?: string;
   };
 
@@ -49,6 +61,11 @@ declare namespace API {
   type deleteInterfaceUsingDELETEParams = {
     /** interfaceId */
     interfaceId: number;
+  };
+
+  type deleteProductUsingPOSTParams = {
+    /** productId */
+    productId: number;
   };
 
   type deleteUserUsingDELETEParams = {
@@ -66,9 +83,53 @@ declare namespace API {
     emailAccount?: string;
   };
 
-  type getInterfaceInfoByIdUsingGETParams = {
+  type getInterfaceByIdUsingGETParams = {
     /** interfaceId */
     interfaceId: number;
+  };
+
+  type getInterfaceListByPageUsingGETParams = {
+    current?: number;
+    description?: string;
+    method?: number;
+    name?: string;
+    pageSize?: number;
+    reduceScore?: number;
+    'responseParams[0].desc'?: string;
+    'responseParams[0].fieldName'?: string;
+    'responseParams[0].id'?: string;
+    'responseParams[0].type'?: string;
+    returnFormat?: string;
+    sortField?: string;
+    sortOrder?: string;
+    status?: number;
+    url?: string;
+    userId: number;
+  };
+
+  type getInterfaceListBySearchTextPageUsingGETParams = {
+    current?: number;
+    pageSize?: number;
+    searchText?: string;
+    sortField?: string;
+    sortOrder?: string;
+  };
+
+  type getProductByIdUsingGETParams = {
+    /** productId */
+    productId: number;
+  };
+
+  type getProductListByPageUsingGETParams = {
+    addPoints?: number;
+    current?: number;
+    description?: string;
+    name?: string;
+    pageSize?: number;
+    productType?: number;
+    sortField?: string;
+    sortOrder?: string;
+    total?: number;
   };
 
   type getUserByIdUsingGETParams = {
@@ -114,7 +175,7 @@ declare namespace API {
     method?: number;
     /** 接口名称 */
     name?: string;
-    /** 减少积分个数 */
+    /** 扣除积分个数 */
     reduceScore?: number;
     /** 请求示例 */
     requestExample?: string;
@@ -141,7 +202,7 @@ declare namespace API {
     method?: number;
     /** 接口名称 */
     name?: string;
-    /** 减少积分个数 */
+    /** 扣除积分个数 */
     reduceScore?: number;
     /** 请求示例 */
     requestExample?: string;
@@ -170,46 +231,29 @@ declare namespace API {
     userRequestParams?: string;
   };
 
-  type listInterfaceInfoByPageUsingGETParams = {
-    current?: number;
-    description?: string;
-    method?: number;
-    name?: string;
-    pageSize?: number;
-    reduceScore?: number;
-    'responseParams[0].desc'?: string;
-    'responseParams[0].fieldName'?: string;
-    'responseParams[0].id'?: string;
-    'responseParams[0].type'?: string;
-    returnFormat?: string;
-    sortField?: string;
-    sortOrder?: string;
-    status?: number;
-    url?: string;
-    userId: number;
-  };
-
-  type listInterfaceInfoBySearchTextPageUsingGETParams = {
-    current?: number;
-    pageSize?: number;
-    searchText?: string;
-    sortField?: string;
-    sortOrder?: string;
-  };
-
   type normalUserUsingPOSTParams = {
     /** userId */
     userId: number;
   };
 
-  type offlineInterfaceInfoUsingPOSTParams = {
+  type offlineInterfaceUsingPOSTParams = {
     /** interfaceId */
     interfaceId: number;
   };
 
-  type onlineInterfaceInfoUsingPOSTParams = {
+  type offlineProductInfoUsingPOSTParams = {
+    /** productId */
+    productId: number;
+  };
+
+  type onlineInterfaceUsingPOSTParams = {
     /** interfaceId */
     interfaceId: number;
+  };
+
+  type onlineProductInfoUsingPOSTParams = {
+    /** productId */
+    productId: number;
   };
 
   type OrderItem = {
@@ -230,6 +274,19 @@ declare namespace API {
     total?: number;
   };
 
+  type PageProductInfo = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: ProductInfo[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
+  };
+
   type PageUserVO = {
     countId?: string;
     current?: number;
@@ -240,6 +297,53 @@ declare namespace API {
     records?: UserVO[];
     searchCount?: boolean;
     size?: number;
+    total?: number;
+  };
+
+  type ProductInfo = {
+    addPoints?: number;
+    createTime?: string;
+    description?: string;
+    expirationTime?: string;
+    id?: number;
+    isDelete?: number;
+    name?: string;
+    productType?: number;
+    status?: number;
+    total?: number;
+    updateTime?: string;
+    userId?: number;
+  };
+
+  type ProductInfoAddRequest = {
+    /** 增加积分个数 */
+    addPoints?: number;
+    /** 产品描述 */
+    description?: string;
+    /** 过期时间 */
+    expirationTime?: string;
+    /** 产品名称 */
+    name?: string;
+    /** 产品类型 */
+    productType?: number;
+    /** 产品金额 */
+    total?: number;
+  };
+
+  type ProductInfoUpdateRequest = {
+    /** 增加积分个数 */
+    addPoints?: number;
+    /** 产品描述 */
+    description?: string;
+    /** 过期时间 */
+    expirationTime?: string;
+    /** 产品 Id */
+    id?: number;
+    /** 产品名称 */
+    name?: string;
+    /** 产品类型 */
+    productType?: number;
+    /** 产品金额 */
     total?: number;
   };
 
@@ -284,7 +388,6 @@ declare namespace API {
   };
 
   type UserEmailRegisterRequest = {
-    agreeToAnAgreement?: string;
     /** 验证码 */
     captcha?: string;
     /** 邮箱 */
@@ -348,20 +451,5 @@ declare namespace API {
     userAvatar?: string;
     userName?: string;
     userRole?: number;
-  };
-
-  type ProductInfo = {
-    addPoints?: number;
-    createTime?: string;
-    description?: string;
-    expirationTime?: string;
-    id?: number;
-    isDelete?: number;
-    name?: string;
-    productType?: string;
-    status?: number;
-    total?: number;
-    updateTime?: string;
-    userId?: number;
   };
 }

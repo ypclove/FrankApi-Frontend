@@ -14,7 +14,7 @@ export async function addUserUsingPost(body: API.UserAddRequest, options?: { [ke
   });
 }
 
-/** banUser POST /api/user/ban/${param0} */
+/** banUser POST /api/user/ban/${userId} */
 export async function banUserUsingPost(
   userId: number | undefined,
   options?: { [key: string]: any }
@@ -45,7 +45,7 @@ export async function deleteUserUsingDelete(
   userId: number | undefined,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseboolean>(`/api/user/delete/${userId}/`, {
+  return request<API.BaseResponseboolean>(`/api/user/delete/${userId}`, {
     method: 'DELETE',
     ...(options || {})
   });
@@ -171,7 +171,7 @@ export async function userLogoutUsingPost(options?: { [key: string]: any }) {
   });
 }
 
-/** normalUser POST /api/user/normal/${param0} */
+/** normalUser POST /api/user/normal/${userId} */
 export async function normalUserUsingPost(
   userId: number | undefined,
   options?: { [key: string]: any }

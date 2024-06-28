@@ -134,14 +134,14 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
     key: 'name',
     formItemProps: {
       rules: [
-        // {
-        //   required: true,
-        //   message: '接口名称不能为空'
-        // },
-        // {
-        //   max: 50,
-        //   message: '接口名称长度不能超过 50 字符'
-        // }
+        {
+          required: true,
+          message: '接口名称不能为空'
+        },
+        {
+          max: 50,
+          message: '接口名称长度不能超过 50 字符'
+        }
       ]
     },
     width: 'lg'
@@ -152,18 +152,18 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
     tooltip: '接口地址',
     formItemProps: {
       rules: [
-        // {
-        //   required: true,
-        //   message: '接口地址不能为空'
-        // },
-        // {
-        //   type: 'url',
-        //   message: '接口地址格式有误'
-        // },
-        // {
-        //   max: 200,
-        //   message: '接口地址长度长度不能超过 200 字符'
-        // }
+        {
+          required: true,
+          message: '接口地址不能为空'
+        },
+        {
+          type: 'url',
+          message: '接口地址格式有误'
+        },
+        {
+          max: 200,
+          message: '接口地址长度长度不能超过 200 字符'
+        }
       ]
     },
     key: 'url',
@@ -191,10 +191,10 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
     },
     formItemProps: {
       rules: [
-        // {
-        //   required: true,
-        //   message: '请求方法不能为空'
-        // }
+        {
+          required: true,
+          message: '请求方法不能为空'
+        }
       ]
     },
     width: 'lg',
@@ -213,17 +213,17 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
     },
     formItemProps: {
       rules: [
-        // () => ({
-        //   validator(_, value) {
-        //     if (!value) {
-        //       return Promise.reject(new Error('扣除积分个数不能为空'));
-        //     }
-        //     if (value < 1) {
-        //       return Promise.reject(new Error('扣除积分个数不能小于 1'));
-        //     }
-        //     return Promise.resolve();
-        //   }
-        // })
+        () => ({
+          validator(_, value) {
+            if (!value) {
+              return Promise.reject(new Error('扣除积分个数不能为空'));
+            }
+            if (value < 1) {
+              return Promise.reject(new Error('扣除积分个数不能小于 1'));
+            }
+            return Promise.resolve();
+          }
+        })
       ]
     }
   },
@@ -279,12 +279,12 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
     width: 'lg',
     valueType: 'jsonCode',
     formItemProps: {
-      // rules: [
-      //   {
-      //     max: 100,
-      //     message: '接口描述长度不能超过 100 字符'
-      //   }
-      // ]
+      rules: [
+        {
+          max: 100,
+          message: '接口描述长度不能超过 100 字符'
+        }
+      ]
     },
     colProps: {
       span: 12
