@@ -1,17 +1,18 @@
 import EmailModal from '@/components/EmailModal';
 import SendGiftModal from '@/components/Gift/SendGift';
-import { API_SDK } from '@/constant';
-import { requestConfig } from '@/requestConfig';
-import { doDailyCheckInUsingPost } from '@/services/FrankApi/dailyCheckInController';
+import {API_SDK} from '@/constant';
+import {requestConfig} from '@/requestConfig';
+import {doDailyCheckInUsingPost} from '@/services/FrankApi/dailyCheckInController';
 import {
   getLoginUserUsingGet,
+  updateDevCredUsingPost,
   updateUserUsingPost,
   userBindEmailUsingPost,
   userUnBindEmailUsingPost
 } from '@/services/FrankApi/userController';
-import { EditOutlined, PlusOutlined, VerticalAlignBottomOutlined } from '@ant-design/icons';
+import {EditOutlined, PlusOutlined, VerticalAlignBottomOutlined} from '@ant-design/icons';
 import ProCard from '@ant-design/pro-card';
-import { history, useModel } from '@umijs/max';
+import {history, useModel} from '@umijs/max';
 import {
   Button,
   Descriptions,
@@ -26,15 +27,21 @@ import {
   UploadProps
 } from 'antd';
 import ImgCrop from 'antd-img-crop';
-import { RcFile } from 'antd/es/upload';
+import {RcFile} from 'antd/es/upload';
 import Paragraph from 'antd/lib/typography/Paragraph';
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Settings from '../../../../config/defaultSettings';
 
+/**
+ * 检查值是否存在，并且去除首位控制之后长度大于 0
+ * @param val
+ */
 export const valueLength = (val: any) => {
   return val && val.trim().length > 0;
 };
+
 const UserInfo: React.FC = () => {
+  // TODO: 放在常量类
   const unloadFileTypeList = [
     'image/jpeg',
     'image/jpg',
@@ -56,14 +63,15 @@ const UserInfo: React.FC = () => {
   const [userName, setUserName] = useState<string | undefined>('');
   const [open, setOpen] = useState(false);
   const [openEmailModal, setOpenEmailModal] = useState(false);
-
   const ref1 = useRef(null);
   const ref2 = useRef(null);
   const ref3 = useRef(null);
   const ref4 = useRef(null);
-
   const [openTour, setOpenTour] = useState<boolean>(false);
 
+  /**
+   * 新手引导
+   */
   const steps: TourProps['steps'] = [
     {
       title: '个人信息设置',
@@ -73,7 +81,7 @@ const UserInfo: React.FC = () => {
           <br />
           您还可以修改和更新昵称和头像。
           <br />
-          邮箱主要用于接收<strong>支付订单信息</strong>，不绑定无法接收哦，快去绑定吧！！🥰
+          邮箱主要用于接收<strong>支付订单信息</strong>，如果不绑定无法接收，快去绑定吧！🥰
         </span>
       ),
       target: () => ref1.current
@@ -82,9 +90,9 @@ const UserInfo: React.FC = () => {
       title: '我的钱包',
       description: (
         <span>
-          这里是您的钱包，坤币用于平台接口的调用费用。
+          这里是您的钱包余额，金币用于平台接口的调用费用。
           <br />
-          除了充值坤币外，您还可以每日签到或者邀请好友注册来获得坤币
+          除了充值金币外，您还可以通过每日签到或者邀请好友注册来获得坤币！
         </span>
       ),
       target: () => ref2.current
@@ -95,12 +103,15 @@ const UserInfo: React.FC = () => {
       target: () => ref3.current
     },
     {
-      title: '开发者SDK',
-      description: '您可以使用开发者SDK，快速高效的接入接口到您的项目中',
+      title: '开发者 SDK',
+      description: '您可以使用开发者 SDK，快速高效的接入接口到您的项目中，快动手试一下吧！',
       target: () => ref4.current
     }
   ];
 
+  /**
+   * 加载数据
+   */
   const loadData = async () => {
     setLoading(true);
     const res = await getLoginUserUsingGet();
@@ -126,7 +137,7 @@ const UserInfo: React.FC = () => {
       setUserName(loginUser?.userName);
       setLoading(false);
     }
-    // PC端显示指引
+    // PC 端显示指引
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
       navigator.userAgent
     );
@@ -144,6 +155,10 @@ const UserInfo: React.FC = () => {
     loadData();
   }, []);
 
+  /**
+   * 将文件进行 Base64 编码
+   * @param file 文件
+   */
   const getBase64 = (file: RcFile): Promise<string> =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -152,6 +167,10 @@ const UserInfo: React.FC = () => {
       reader.onerror = (error) => reject(error);
     });
 
+  /**
+   * 文件预览处理
+   * @param file 文件
+   */
   const handlePreview = async (file: UploadFile) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj as RcFile);
@@ -161,6 +180,9 @@ const UserInfo: React.FC = () => {
     setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('-') + 1));
   };
 
+  /**
+   * 上传按钮
+   */
   const uploadButton = () => {
     return (
       <div>
@@ -170,14 +192,18 @@ const UserInfo: React.FC = () => {
     );
   };
 
+  /**
+   * 上传文件之间的校验
+   * @param file 文件
+   */
   const beforeUpload = async (file: RcFile) => {
     const fileType = unloadFileTypeList.includes(file.type);
     if (!fileType) {
-      message.error('图片类型有误,请上传jpg/png/svg/jpeg/webp格式!');
+      message.error('图片类型有误，请上传 jpg/png/svg/jpeg/webp 格式');
     }
     const isLt2M = file.size / 1024 / 1024 < 1;
     if (!isLt2M) {
-      message.error('文件大小不能超过 1M !');
+      message.error('文件大小不能超过 2M');
     }
     if (!isLt2M && !fileType) {
       const updatedFileList = [...fileList];
@@ -195,36 +221,9 @@ const UserInfo: React.FC = () => {
     return fileType && isLt2M;
   };
 
-  const updateVoucher = async () => {
-    setVoucherLoading(true);
-    const res = await updateVoucherUsingPOST();
-    if (res.data && res.code === 20000) {
-      setInitialState({ loginUser: res.data, settings: Settings });
-      setTimeout(() => {
-        message.success(`凭证更新成功`);
-        setVoucherLoading(false);
-      }, 800);
-    }
-  };
-
-  const updateUserInfo = async () => {
-    let avatarUrl = '';
-    if (fileList && fileList[0] && valueLength(fileList[0].url)) {
-      // @ts-ignore
-      avatarUrl = fileList[0].url;
-    }
-    const res = await updateUserUsingPost({
-      // @ts-ignore
-      userAvatar: avatarUrl,
-      id: loginUser?.id,
-      userName: userName
-    });
-    if (res.data && res.code === 20000) {
-      setInitialState({ loginUser: res.data, settings: Settings });
-      message.success(`信息更新成功`);
-    }
-  };
-
+  /**
+   * 上传文件
+   */
   const props: UploadProps = {
     name: 'file',
     withCredentials: true,
@@ -282,9 +281,38 @@ const UserInfo: React.FC = () => {
     }
   };
 
+  /**
+   * TODO: 更新失败弹出两次错误消息
+   * TODO: 这里的修改会和修改用户的不一致导致报错
+   * 更新个人信息
+   */
+  const updateUserInfo = async () => {
+    let avatarUrl = '';
+    if (fileList && fileList[0] && valueLength(fileList[0].url)) {
+      // @ts-ignore
+      avatarUrl = fileList[0].url;
+    }
+    const res = await updateUserUsingPost({
+      // @ts-ignore
+      userAvatar: avatarUrl,
+      id: loginUser?.id,
+      userName: userName
+    });
+    if (res.data && res.code === 20000) {
+      setInitialState({ loginUser: res.data, settings: Settings });
+      message.success(`信息更新成功`);
+      await loadData();
+    } else {
+      message.error(res.msg);
+    }
+  };
+
+  /**
+   * 邮箱绑定请求
+   * @param values 邮箱绑定请求
+   */
   const handleBindEmailSubmit = async (values: API.UserBindEmailRequest) => {
     try {
-      // 绑定邮箱
       const res = await userBindEmailUsingPost({
         ...values
       });
@@ -296,30 +324,66 @@ const UserInfo: React.FC = () => {
         }
         setOpenEmailModal(false);
         message.success('绑定成功');
+        await loadData();
+      } else {
+        message.error(res.msg);
       }
     } catch (error) {
       const defaultLoginFailureMessage = '操作失败！';
       message.error(defaultLoginFailureMessage);
     }
   };
+
+  /**
+   * 邮箱解绑
+   * @param values 邮箱解绑请求
+   */
   const handleUnBindEmailSubmit = async (values: API.UserUnBindEmailRequest) => {
     try {
-      // 绑定邮箱
       const res = await userUnBindEmailUsingPost({ ...values });
       if (res.data && res.code === 20000) {
         if (initialState?.settings.navTheme === 'light') {
           setInitialState({ loginUser: res.data, settings: { ...Settings, navTheme: 'light' } });
         } else {
-          setInitialState({ loginUser: res.data, settings: { ...Settings, navTheme: 'realDark' } });
+          setInitialState({
+            loginUser: res.data,
+            settings: { ...Settings, navTheme: 'realDark' }
+          });
         }
         setOpenEmailModal(false);
         message.success('解绑成功');
+        await loadData();
+      } else {
+        message.error(res.msg);
       }
     } catch (error) {
       const defaultLoginFailureMessage = '操作失败！';
       message.error(defaultLoginFailureMessage);
     }
   };
+
+  /**
+   * 更新开发者凭证
+   */
+  const updateDevCred = async () => {
+    setVoucherLoading(true);
+    const res = await updateDevCredUsingPost();
+    if (res.data && res.code === 20000) {
+      setInitialState({
+        loginUser: res.data,
+        settings: Settings
+      });
+      setTimeout(() => {
+        message.success('更新凭证成功');
+        setVoucherLoading(false);
+        loadData();
+      }, 800);
+    } else {
+      setVoucherLoading(false);
+      message.error(res.msg);
+    }
+  };
+
   return (
     <Spin spinning={loading}>
       <ProCard type="inner" bordered direction="column">
@@ -365,7 +429,7 @@ const UserInfo: React.FC = () => {
           </Descriptions.Item>
           <Descriptions column={1}>
             <div>
-              <h4>昵称：</h4>
+              <h4 style={{ marginTop: '20px' }}>昵称：</h4>
               <Paragraph
                 editable={{
                   icon: <EditOutlined />,
@@ -375,23 +439,23 @@ const UserInfo: React.FC = () => {
                   }
                 }}
               >
-                {valueLength(userName) ? userName : '无名氏'}
+                {valueLength(userName) ? userName : '未设置昵称'}
               </Paragraph>
             </div>
             <div>
-              <Tooltip title={'邀请好友注册双方都可获得100积分'}>
-                <h4>我的邀请码：</h4>
+              <Tooltip title={'邀请好友注册双方都可获得 100 积分'}>
+                <h4>邀请码：</h4>
               </Tooltip>
               <Paragraph copyable={valueLength(loginUser?.invitationCode)}>
                 {loginUser?.invitationCode}
               </Paragraph>
             </div>
             <div>
-              <h4>我的id：</h4>
+              <h4> id： </h4>
               <Paragraph copyable={valueLength(loginUser?.id)}>{loginUser?.id}</Paragraph>
             </div>
             <div>
-              <h4>我的邮箱：</h4>
+              <h4>邮箱：</h4>
               <Paragraph copyable={valueLength(loginUser?.email)}>
                 {valueLength(loginUser?.email) ? loginUser?.email : '未绑定邮箱'}
               </Paragraph>
@@ -417,7 +481,7 @@ const UserInfo: React.FC = () => {
             </>
           }
         >
-          <strong>坤币 💰: </strong>{' '}
+          <strong>金币💰：</strong>{' '}
           <span style={{ color: 'red', fontSize: 18 }}>{loginUser?.balance}</span>
           <br />
           <strong>获取更多：</strong>
@@ -453,9 +517,8 @@ const UserInfo: React.FC = () => {
             <Tooltip
               title={
                 <>
-                  <p>每日签到可获取10积分</p>
-                  {/*<p>普通用户上限100</p>*/}
-                  {/*<p>VPI会员上限1000</p>*/}
+                  <p>普通用户每日签到可获取 10 积分</p>
+                  <p>VIP 用户每日签到可获取 50 积分</p>
                 </>
               }
             >
@@ -470,7 +533,7 @@ const UserInfo: React.FC = () => {
           type="inner"
           title={'开发者凭证（调用接口的凭证）'}
           extra={
-            <Button loading={voucherLoading} onClick={updateVoucher}>
+            <Button loading={voucherLoading} onClick={updateDevCred}>
               {loginUser?.accessKey && loginUser?.secretKey ? '更新' : '生成'}凭证
             </Button>
           }
@@ -489,14 +552,14 @@ const UserInfo: React.FC = () => {
               </Descriptions.Item>
             </Descriptions>
           ) : (
-            '暂无凭证,请先生成凭证'
+            '暂无凭证，请先生成凭证'
           )}
         </ProCard>
         <br />
         <ProCard
           ref={ref4}
           type="inner"
-          title={<strong>开发者 SDK（快速接入API接口）</strong>}
+          title={<strong>开发者 SDK（快速接入 API 接口）</strong>}
           bordered
         >
           <Button size={'large'}>

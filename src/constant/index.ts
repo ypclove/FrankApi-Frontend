@@ -16,7 +16,9 @@ export const ALIPAY = alipay;
 export const WECHAT = weChat;
 export const KUN = kun;
 export const LIGHT_COLOR_ICON = lightColorIcon;
+// 用户账号校验规则
 export const USER_ACCOUNT_PATTERN = '^[A-Za-z0-9]+$';
+// 邮箱校验规则
 export const EMAIL_PATTERN = '^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$';
 // TODO: 开发者文档
 export const INTERFACE_DEV_DOC = 'https://blog.franksteven.me';
@@ -24,7 +26,7 @@ export const INTERFACE_DEV_DOC = 'https://blog.franksteven.me';
 export const PRIVACY_AGREEMENT = '';
 // TODO: 用户协议
 export const USER_AGREEMENT = '';
-// TODO: api-sdk
+// TODO: API_SDK
 export const API_SDK = '';
 export const DEFAULT_AVATAR_URL = 'https://avatars.githubusercontent.com/u/48648302?v=4';
 

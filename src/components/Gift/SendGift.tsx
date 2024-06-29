@@ -36,7 +36,7 @@ const SendGiftModal: React.FC<Props> = (props) => {
   const openNotification = () => {
     navigator.clipboard.writeText(giftValue + window.location.origin + '/' + invitationCode);
     api.open({
-      message: '复制成功,快分享给好友吧',
+      message: '复制成功，快分享给好友吧',
       icon: <SmileOutlined style={{ color: '#108ee9' }} />
     });
   };

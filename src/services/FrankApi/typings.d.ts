@@ -139,7 +139,7 @@ declare namespace API {
     sortOrder?: string;
     status?: number;
     url?: string;
-    userId?: number;
+    userId: number;
   };
 
   type getInterfaceListBySearchTextPageUsingGETParams = {

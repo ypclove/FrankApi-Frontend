@@ -2,11 +2,9 @@ import Footer from '@/components/Footer';
 import SendGift from '@/components/Gift/SendGift';
 import LightColor from '@/components/Icon/LightColor';
 import { Docs, helloWord } from '@/components/RightContent';
-import NoFoundPage from '@/pages/404';
-// import {valueLength} from '@/pages/User/UserInfo';
-// import {AvatarDropdown, AvatarName} from './components/RightContent/AvatarDropdown';
-// import {errorConfig} from './requestConfig';
 import { GITHUB_LINK, INTERFACE_DEV_DOC, LOGO, WECHAT } from '@/constant';
+import NoFoundPage from '@/pages/404';
+import { valueLength } from '@/pages/User/UserInfo';
 import { requestConfig } from '@/requestConfig';
 import { getLoginUserUsingGet } from '@/services/FrankApi/userController';
 import {
@@ -21,14 +19,23 @@ import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history } from '@umijs/max';
 import { FloatButton, message } from 'antd';
 import Settings from '../config/defaultSettings';
+import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
 
 const loginPath = '/user/login';
-// const whiteList = [loginPath, '/', '/account/center'];
+const whiteList = [loginPath, '/', '/account/center'];
 // const isDev = process.env.NODE_ENV === 'development';
 const stats: InitialState = {
   loginUser: undefined,
   settings: Settings,
   open: false
+};
+
+const baiduStatistics = () => {
+  const hm = document.createElement('script');
+  hm.src = 'https://hm.baidu.com/hm.js?1c3c7a064d6a39da5a90bf71821b4a9a';
+  const s = document.getElementsByTagName('script')[0];
+  // @ts-ignore
+  s.parentNode.insertBefore(hm, s);
 };
 
 /**
@@ -121,22 +128,22 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         ></SendGift>
       </>
     ),
-    // avatarProps: {
-    //   src: valueLength(initialState?.loginUser?.userAvatar)
-    //     ? initialState?.loginUser?.userAvatar
-    //     : '',
-    //   title: initialState?.loginUser ? <AvatarName /> : '游客',
-    //   render: (_, avatarChildren) => {
-    //     return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
-    //   }
-    // },
+    avatarProps: {
+      src: valueLength(initialState?.loginUser?.userAvatar)
+        ? initialState?.loginUser?.userAvatar
+        : '',
+      title: initialState?.loginUser ? <AvatarName /> : '游客',
+      render: (_, avatarChildren) => {
+        return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
+      }
+    },
     onPageChange: () => {
       // 百度统计
-      // baiduStatistics();
+      baiduStatistics();
       const { location } = history;
-      // if (!whiteList.includes(location.pathname)) {
-      //   getInitialState();
-      // }
+      if (!whiteList.includes(location.pathname)) {
+        getInitialState();
+      }
       // 如果没有登录，重定向到 login
       if (
         !initialState?.loginUser &&

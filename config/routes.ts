@@ -3,6 +3,13 @@ export default [
   { path: '/welcome', name: '欢迎', icon: 'smile', component: './Welcome' },
   { path: '*', layout: false, component: './404' },
   {
+    path: '/account/center',
+    name: '个人中心',
+    icon: 'UserOutlined',
+    component: './User/UserInfo',
+    hideInMenu: true
+  },
+  {
     path: '/user',
     layout: false,
     routes: [
@@ -33,11 +40,36 @@ export default [
     hideInMenu: true
   },
   {
+    path: '/order/pay/:id',
+    icon: 'PayCircleOutlined',
+    name: '订单支付',
+    component: './Order/PayOrder',
+    hideInMenu: true
+  },
+  {
+    path: '/order/info/:id',
+    icon: 'ProfileOutlined',
+    name: '订单详情',
+    component: './Order/OrderInfo',
+    hideInMenu: true
+  },
+  { path: '/recharge/list', icon: 'PayCircleOutlined', name: '积分商城', component: './Recharge' },
+  {
+    path: '/order/list',
+    name: '我的订单',
+    icon: 'ProfileOutlined',
+    component: './Order/OrderList'
+  },
+  {
     path: '/admin',
     name: '系统管理',
     icon: 'appstore',
     // access: 'canAdmin',
     routes: [
+      {
+        path: '/admin',
+        redirect: '/admin/interface/list'
+      },
       {
         name: '用户管理',
         icon: 'TeamOutlined',
