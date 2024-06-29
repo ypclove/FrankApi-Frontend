@@ -24,6 +24,8 @@ export const INTERFACE_DEV_DOC = 'https://blog.franksteven.me';
 export const PRIVACY_AGREEMENT = '';
 // TODO: 用户协议
 export const USER_AGREEMENT = '';
+// TODO: api-sdk
+export const API_SDK = '';
 export const DEFAULT_AVATAR_URL = 'https://avatars.githubusercontent.com/u/48648302?v=4';
 
 export const selectGender = [

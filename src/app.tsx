@@ -6,7 +6,7 @@ import NoFoundPage from '@/pages/404';
 // import {valueLength} from '@/pages/User/UserInfo';
 // import {AvatarDropdown, AvatarName} from './components/RightContent/AvatarDropdown';
 // import {errorConfig} from './requestConfig';
-import { INTERFACE_DEV_DOC, LOGO, WECHAT } from '@/constant';
+import { GITHUB_LINK, INTERFACE_DEV_DOC, LOGO, WECHAT } from '@/constant';
 import { requestConfig } from '@/requestConfig';
 import { getLoginUserUsingGet } from '@/services/FrankApi/userController';
 import {
@@ -91,7 +91,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
             tooltip={'查看本站技术及源码，欢迎 star'}
             icon={<GithubOutlined />}
             onClick={() => {
-              location.href = 'https://github.com/qimu666/qi-api';
+              location.href = GITHUB_LINK;
             }}
           />
           <FloatButton

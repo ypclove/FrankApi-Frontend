@@ -27,6 +27,12 @@ export default [
     component: './InterfaceSquare'
   },
   {
+    path: '/interface_info/:id',
+    name: '接口详情',
+    component: './InterfaceInfo',
+    hideInMenu: true
+  },
+  {
     path: '/admin',
     name: '系统管理',
     icon: 'appstore',
@@ -45,7 +51,7 @@ export default [
         component: './Admin/InterfaceInfoList'
       },
       {
-        name: '商品管理',
+        name: '产品管理',
         icon: 'table',
         path: '/admin/productInfo/list',
         component: './Admin/ProductInfoList'

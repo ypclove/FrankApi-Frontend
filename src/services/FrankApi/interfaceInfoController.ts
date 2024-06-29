@@ -1,19 +1,19 @@
 // @ts-ignore
 /* eslint-disable */
-import { request } from '@umijs/max';
+import {request} from '@umijs/max';
 
 /** addInterface POST /api/interfaceInfo/add */
 export async function addInterfaceUsingPost(
   body: API.InterfaceInfoAddRequest,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
   return request<API.BaseResponselong>('/api/interfaceInfo/add', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     data: body,
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
@@ -21,27 +21,24 @@ export async function addInterfaceUsingPost(
 export async function deleteInterfaceUsingDelete(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.deleteInterfaceUsingDELETEParams,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
   const { interfaceId: param0, ...queryParams } = params;
   return request<API.BaseResponseboolean>(`/api/interfaceInfo/delete/${param0}`, {
     method: 'DELETE',
     params: { ...queryParams },
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
-/** getInterfaceById GET /api/interfaceInfo/get/${param0} */
+/** getInterfaceById GET /api/interfaceInfo/get/${interfaceId} */
 export async function getInterfaceByIdUsingGet(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getInterfaceByIdUsingGETParams,
-  options?: { [key: string]: any },
+  interfaceId: number | undefined,
+  options?: { [key: string]: any }
 ) {
-  const { interfaceId: param0, ...queryParams } = params;
-  return request<API.BaseResponseInterfaceInfo>(`/api/interfaceInfo/get/${param0}`, {
+  return request<API.BaseResponseInterfaceInfo>(`/api/interfaceInfo/get/${interfaceId}`, {
     method: 'GET',
-    params: { ...queryParams },
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
@@ -49,29 +46,29 @@ export async function getInterfaceByIdUsingGet(
 export async function getInterfaceListBySearchTextPageUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getInterfaceListBySearchTextPageUsingGETParams,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
   return request<API.BaseResponsePageInterfaceInfo>('/api/interfaceInfo/get/searchText', {
     method: 'GET',
     params: {
-      ...params,
+      ...params
     },
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
 /** invokeInterface POST /api/interfaceInfo/invoke */
 export async function invokeInterfaceUsingPost(
   body: API.InvokeRequest,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseobject>('/api/interfaceInfo/invoke', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     data: body,
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
@@ -79,14 +76,14 @@ export async function invokeInterfaceUsingPost(
 export async function getInterfaceListByPageUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getInterfaceListByPageUsingGETParams,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
   return request<API.BaseResponsePageInterfaceInfo>('/api/interfaceInfo/list/page', {
     method: 'GET',
     params: {
-      ...params,
+      ...params
     },
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
@@ -94,13 +91,13 @@ export async function getInterfaceListByPageUsingGet(
 export async function offlineInterfaceUsingPost(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.offlineInterfaceUsingPOSTParams,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
   const { interfaceId: param0, ...queryParams } = params;
   return request<API.BaseResponseboolean>(`/api/interfaceInfo/offline/${param0}`, {
     method: 'POST',
     params: { ...queryParams },
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
@@ -108,27 +105,27 @@ export async function offlineInterfaceUsingPost(
 export async function onlineInterfaceUsingPost(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.onlineInterfaceUsingPOSTParams,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
   const { interfaceId: param0, ...queryParams } = params;
   return request<API.BaseResponseboolean>(`/api/interfaceInfo/online/${param0}`, {
     method: 'POST',
     params: { ...queryParams },
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
 /** updateInterface POST /api/interfaceInfo/update */
 export async function updateInterfaceUsingPost(
   body: API.InterfaceInfoUpdateRequest,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseboolean>('/api/interfaceInfo/update', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     data: body,
-    ...(options || {}),
+    ...(options || {})
   });
 }

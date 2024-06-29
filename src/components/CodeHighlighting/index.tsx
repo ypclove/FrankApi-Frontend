@@ -1,11 +1,8 @@
-import { useState } from 'react';
-// @ts-ignore
-import SyntaxHighlighter from 'react-syntax-highlighter';
-// @ts-ignore
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-// @ts-ignore
 import { CopyOutlined } from '@ant-design/icons';
 import { message } from 'antd';
+import { useState } from 'react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import SyntaxHighlighter from 'react-syntax-highlighter';
 import docco from 'react-syntax-highlighter/dist/esm/styles/hljs/docco';
 
 type tProps = {
