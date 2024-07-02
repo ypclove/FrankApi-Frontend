@@ -1,7 +1,7 @@
 ﻿import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
 import { history } from '@umijs/max';
-import { message } from 'antd'; // 与后端约定的响应数据格式
+import { message } from 'antd';
 
 // 与后端约定的响应数据格式
 interface ResponseStructure {
@@ -27,8 +27,7 @@ export const requestConfig: RequestConfig = {
 
   // 响应拦截器
   responseInterceptors: [
-    (response: any) => {
-      // 拦截响应数据，进行个性化处理
+    (response) => {
       const { data } = response as unknown as ResponseStructure;
       const { code } = data;
       if (data && code === 20000) {
@@ -40,7 +39,7 @@ export const requestConfig: RequestConfig = {
               if (location.pathname.includes('/interface_info/')) {
                 break;
               }
-              message.error(data.msg);
+              message.error(data.message);
               history.push('/user/login');
             }
             break;
@@ -50,7 +49,7 @@ export const requestConfig: RequestConfig = {
               location.pathname !== '/' &&
               location.pathname !== '/interface/list'
             ) {
-              message.error(data.msg);
+              message.error(data.message);
               history.push('/user/login');
             }
             break;
@@ -58,7 +57,7 @@ export const requestConfig: RequestConfig = {
             if (location.pathname.includes('/interface_info/')) {
               break;
             }
-            message.error(data.msg);
+            message.error(data.message);
             break;
         }
       }

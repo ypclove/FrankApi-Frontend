@@ -5,6 +5,11 @@ export const InterfaceRequestMethodEnum: any = {
   4: 'orange'
 };
 
+export const UserGenderEnum: any = {
+  0: 'orange',
+  1: 'blue'
+};
+
 export const InterfaceStatusEnum: any = {
   0: {
     text: '关闭',

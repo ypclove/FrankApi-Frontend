@@ -60,7 +60,7 @@ const Register: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (values: API.UserRegisterRequest) => {
+  const handleSubmit = async (values: API.UserRequest) => {
     // try {
     // 登录
     const res = await userRegisterUsingPost({
@@ -74,7 +74,7 @@ const Register: React.FC = () => {
     // }
   };
 
-  const handleEmailSubmit = async (values: API.UserEmailRegisterRequest) => {
+  const handleEmailSubmit = async (values: API.UserRequest) => {
     try {
       // 登录
       const res = await userEmailRegisterUsingPost({
@@ -119,9 +119,9 @@ const Register: React.FC = () => {
           }}
           onFinish={async (values) => {
             if (type === 'account') {
-              await handleSubmit(values as API.UserRegisterRequest);
+              await handleSubmit(values as API.UserRequest);
             } else {
-              await handleEmailSubmit(values as API.UserEmailRegisterRequest);
+              await handleEmailSubmit(values as API.UserRequest);
             }
           }}
         >

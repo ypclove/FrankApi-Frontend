@@ -31,24 +31,29 @@ export async function createOrderUsingPost(
   });
 }
 
-/** deleteProductOrder DELETE /api/order/delete/${orderId} */
+/** deleteProductOrder DELETE /api/order/delete/${param0} */
 export async function deleteProductOrderUsingDelete(
-  orderId: string | undefined,
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.deleteProductOrderUsingDELETEParams,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseboolean>(`/api/order/delete/${orderId}`, {
+  const { orderId: param0, ...queryParams } = params;
+  return request<API.BaseResponseboolean>(`/api/order/delete/${param0}`, {
     method: 'DELETE',
+    params: { ...queryParams },
     ...(options || {})
   });
 }
 
-/** getProductOrderById GET /api/order/get/${orderId} */
+/** getProductOrderById GET /api/order/get/${param0} */
 export async function getProductOrderByIdUsingGet(
-  orderId: string | undefined,
+  params: API.getProductOrderByIdUsingGETParams,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseProductOrderVo>(`/api/order/get/${orderId}`, {
+  const { orderId: param0, ...queryParams } = params;
+  return request<API.BaseResponseProductOrderVo>(`/api/order/get/${param0}`, {
     method: 'GET',
+    params: { ...queryParams },
     ...(options || {})
   });
 }

@@ -1,12 +1,11 @@
 import Footer from '@/components/Footer';
 import SendGift from '@/components/Gift/SendGift';
 import LightColor from '@/components/Icon/LightColor';
-import { Docs, helloWord } from '@/components/RightContent';
+import { Docs } from '@/components/RightContent';
 import { GITHUB_LINK, INTERFACE_DEV_DOC, LOGO, WECHAT } from '@/constant';
 import NoFoundPage from '@/pages/404';
 import { valueLength } from '@/pages/User/UserInfo';
 import { requestConfig } from '@/requestConfig';
-import { getLoginUserUsingGet } from '@/services/FrankApi/userController';
 import {
   BarsOutlined,
   ExportOutlined,
@@ -42,15 +41,16 @@ const baiduStatistics = () => {
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
 export async function getInitialState(): Promise<InitialState> {
-  console.log(`%c${helloWord}`, 'color:#e59de3');
-  try {
-    const res = await getLoginUserUsingGet();
-    if (res.data && res.code === 20000) {
-      stats.loginUser = res.data;
-    }
-  } catch (error) {
-    history.push(loginPath);
-  }
+  // console.log(`%c${helloWord}`, 'color:#e59de3');
+  // 取消自动登录
+  // try {
+  //   const res = await getLoginUserUsingGet();
+  //   if (res.data && res.code === 20000) {
+  //     stats.loginUser = res.data;
+  //   }
+  // } catch (error) {
+  //   history.push(loginPath);
+  // }
   return stats;
 }
 
@@ -60,7 +60,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
   return {
     actionsRender: () => [<Docs key="doc" />],
     waterMarkProps: {
-      content: initialState?.loginUser?.userName
+      content: initialState?.loginUser?.userAccount
     },
     logo: LOGO,
     footerRender: () => (

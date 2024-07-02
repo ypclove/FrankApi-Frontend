@@ -3,7 +3,7 @@ import { NewRequestColumn, NewResponseColumn } from '@/components/ParamsTable/co
 import { InterfaceRequestMethodEnum } from '@/enum/commonEnum';
 import { Link } from '@@/exports';
 import { ProColumns, ProFormColumnsType } from '@ant-design/pro-components';
-import { Tag } from 'antd';
+import { Tag, Tooltip } from 'antd';
 
 export const defaultNewRequestColumn: NewRequestColumn = {
   fieldName: '',
@@ -312,14 +312,18 @@ const InterfaceInfoColumns: ProColumns<API.InterfaceInfo>[] = [
   {
     title: '接口名称',
     align: 'center',
+    // 列的数据索引
     dataIndex: 'name',
+    // 列的内容可复制
     copyable: true,
+    // 列的值类型为文本
     valueType: 'text',
     render: (_, record) => (
       <Link key={record.id} to={`/interface_info/${record.id}`}>
         {record.name}
       </Link>
     ),
+    // 内容超出部分显示为省略号
     ellipsis: true,
     key: 'name'
   },
@@ -330,18 +334,22 @@ const InterfaceInfoColumns: ProColumns<API.InterfaceInfo>[] = [
     valueType: 'text',
     ellipsis: true,
     copyable: true,
-    key: 'url'
+    key: 'url',
+    render: (_, record) => (
+      <Tooltip title={record.url} placement="topLeft">
+        <span>{record.url}</span>
+      </Tooltip>
+    )
   },
   {
-    title: '扣除积分个数',
+    title: '扣除积分数',
     align: 'center',
     dataIndex: 'reduceScore',
     valueType: 'text',
-    width: 80,
     key: 'reduceScore'
   },
   {
-    title: '总调用次数',
+    title: '调用次数',
     align: 'center',
     dataIndex: 'totalInvokes',
     valueType: 'text',
@@ -354,17 +362,20 @@ const InterfaceInfoColumns: ProColumns<API.InterfaceInfo>[] = [
     dataIndex: 'requestParams',
     valueType: 'text',
     search: false,
-    width: 120,
     ellipsis: true,
     copyable: true,
-    key: 'requestParams'
+    key: 'requestParams',
+    render: (_, record) => (
+      <Tooltip title={record.requestParams} placement="topLeft">
+        <span>{record.requestParams}</span>
+      </Tooltip>
+    )
   },
   {
     title: '状态',
     align: 'center',
     filters: true,
     onFilter: true,
-    width: 100,
     dataIndex: 'status',
     key: 'status',
     valueEnum: {
@@ -387,7 +398,6 @@ const InterfaceInfoColumns: ProColumns<API.InterfaceInfo>[] = [
     align: 'center',
     dataIndex: 'method',
     filters: true,
-    width: 100,
     onFilter: true,
     valueType: 'text',
     key: 'method',

@@ -21,13 +21,7 @@ import {
 } from '@/services/FrankApi/userController';
 
 const UserList: React.FC = () => {
-  /**
-   * 新建窗口的弹窗
-   */
   const [createModalOpen, handleModalOpen] = useState<boolean>(false);
-  /**
-   * 分布更新窗口的弹窗
-   */
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
@@ -37,7 +31,7 @@ const UserList: React.FC = () => {
    * 添加用户
    * @param fields 添加用户的字段
    */
-  const handleAdd = async (fields: API.UserAddRequest) => {
+  const handleAdd = async (fields: API.UserRequest) => {
     const hide = message.loading('正在添加');
     try {
       const res = await addUserUsingPost({
@@ -46,12 +40,16 @@ const UserList: React.FC = () => {
       if (res.data && res.code === 20000) {
         hide();
         message.success('添加成功');
+        actionRef.current?.reload();
+        return true;
       } else {
         message.error(res.msg);
+        return false;
       }
     } catch (error: any) {
       hide();
       message.error('添加失败' + error.message);
+      return false;
     }
   };
 
@@ -59,13 +57,14 @@ const UserList: React.FC = () => {
    * 更新用户
    * @param fields 用户修改的字段
    */
-  const handleUpdate = async (fields: API.UserVO) => {
+  const handleUpdate = async (fields: API.UserRequest) => {
     const hide = message.loading('修改中');
     try {
       const res = await updateUserUsingPost({ id: currentRow?.id, ...fields });
       if (res.data && res.code === 20000) {
         hide();
         message.success('修改成功');
+        actionRef.current?.reload();
         return true;
       } else {
         message.error(res.msg);
@@ -79,12 +78,14 @@ const UserList: React.FC = () => {
 
   /**
    * 删除用户
-   * @param userId
+   * @param record 用户
    */
-  const handleRemove = async (userId: number | undefined) => {
+  const handleRemove = async (record: API.UserRequest) => {
     const hide = message.loading('正在删除');
     try {
-      const res = await deleteUserUsingDelete(userId);
+      const res = await deleteUserUsingDelete({
+        id: record.id
+      });
       hide();
       if (res.data && res.code === 20000) {
         message.success('删除成功');
@@ -100,12 +101,14 @@ const UserList: React.FC = () => {
 
   /**
    * 封号
-   * @param userId 用户
+   * @param record 用户
    */
-  const handleBanUser = async (userId: number | undefined) => {
+  const handleBanUser = async (record: API.UserRequest) => {
     const hide = message.loading('封号中');
     try {
-      const res = await banUserUsingPost(userId);
+      const res = await banUserUsingPost({
+        id: record.id
+      });
       hide();
       if (res.data && res.code === 20000) {
         message.success('封号成功');
@@ -124,12 +127,14 @@ const UserList: React.FC = () => {
 
   /**
    * 解封
-   * @param userId 用户 Id
+   * @param record 用户
    */
-  const handleNormalUser = async (userId: number | undefined) => {
+  const handleNormalUser = async (record: API.UserRequest) => {
     const hide = message.loading('解封中');
     try {
-      const res = await normalUserUsingPost(userId);
+      const res = await normalUserUsingPost({
+        id: record.id
+      });
       hide();
       if (res.data && res.code === 20000) {
         message.success('解封成功');
@@ -171,7 +176,7 @@ const UserList: React.FC = () => {
           <Popconfirm
             key={'Normal'}
             title="请确认是否解封该用户？"
-            onConfirm={() => handleNormalUser(record.id)}
+            onConfirm={() => handleNormalUser(record)}
             onCancel={cancel}
             okText="是"
             cancelText="否"
@@ -192,7 +197,7 @@ const UserList: React.FC = () => {
           <Popconfirm
             key={'Ban'}
             title="请确认是否封禁该用户？"
-            onConfirm={() => handleBanUser(record.id)}
+            onConfirm={() => handleBanUser(record)}
             onCancel={cancel}
             okText="是"
             cancelText="否"
@@ -213,7 +218,7 @@ const UserList: React.FC = () => {
         <Popconfirm
           key={'Delete'}
           title="请确认是否删除该用户？"
-          onConfirm={() => handleRemove(record.id)}
+          onConfirm={() => handleRemove(record)}
           onCancel={cancel}
           okText="是"
           cancelText="否"
@@ -254,7 +259,7 @@ const UserList: React.FC = () => {
             <PlusOutlined /> 新建
           </Button>
         ]}
-        pagination={{ defaultPageSize: 10 }}
+        pagination={{ defaultPageSize: 10, position: ['bottomCenter'] }}
         request={async (params) => {
           setLoading(true);
           const res = await getUserListByPageUsingGet({ ...params });
@@ -284,7 +289,6 @@ const UserList: React.FC = () => {
         onOpenChange={handleModalOpen}
         onSubmit={async (value) => {
           const success = await handleAdd(value as API.UserVO);
-          // @ts-ignore
           if (success) {
             handleModalOpen(false);
             if (actionRef.current) {

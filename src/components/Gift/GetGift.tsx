@@ -21,13 +21,13 @@ const GetGiftModal: React.FC<Props> = (props) => {
             <img
               style={{ width: 80, height: 80, borderRadius: '50%' }}
               src={data?.userAvatar ?? NOT_LOGIN_AVATAR}
-              alt={data?.userName}
+              alt={data?.userAccount}
             />
           </div>
         </ProCard>
         <ProCard layout="center">
           <Divider style={{ marginTop: -25 }}>
-            来自“<strong>{data?.userName}</strong>”的邀请
+            来自“<strong>{data?.userAccount}</strong>”的邀请
           </Divider>
         </ProCard>
         <ProCard layout="center">

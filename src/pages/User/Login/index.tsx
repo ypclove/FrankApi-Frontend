@@ -29,17 +29,28 @@ const Login: React.FC = () => {
       backgroundSize: '100% 100%'
     };
   });
+
+  /**
+   * 登录
+   * @param res 登录参数
+   */
   const doLogin = (res: any) => {
     if (res.data && res.code === 20000) {
       message.success('登录成功');
+      // 登录成功后将用户信息保存到 initialState 中
+      setInitialState({ loginUser: res.data, settings: Settings });
       setTimeout(() => {
         const urlParams = new URL(window.location.href).searchParams;
         history.push(urlParams.get('redirect') || '/');
       }, 100);
-      setInitialState({ loginUser: res.data, settings: Settings });
     }
   };
-  const handleSubmit = async (values: API.UserLoginRequest) => {
+
+  /**
+   * 平台登录
+   * @param values 平台登录请求参数
+   */
+  const handleSubmit = async (values: API.UserRequest) => {
     try {
       // 登录
       const res = await userLoginUsingPost({
@@ -47,12 +58,15 @@ const Login: React.FC = () => {
       });
       doLogin(res);
     } catch (error) {
-      const defaultLoginFailureMessage = '登录失败，请重试！';
-      message.error(defaultLoginFailureMessage);
+      message.error('登录失败，请重试！');
     }
   };
 
-  const handleEmailSubmit = async (values: API.UserEmailLoginRequest) => {
+  /**
+   * 邮箱登录
+   * @param values 邮箱登录请求参数
+   */
+  const handleEmailSubmit = async (values: API.UserRequest) => {
     try {
       // 登录
       const res = await userEmailLoginUsingPost({
@@ -60,12 +74,10 @@ const Login: React.FC = () => {
       });
       doLogin(res);
     } catch (error) {
-      const defaultLoginFailureMessage = '登录失败，请重试！';
-      message.error(defaultLoginFailureMessage);
+      message.error('登录失败，请重试！');
     }
   };
 
-  // @ts-ignore
   return (
     <div className={containerClassName}>
       <Helmet>
@@ -92,9 +104,9 @@ const Login: React.FC = () => {
           }}
           onFinish={async (values) => {
             if (type === 'account') {
-              await handleSubmit(values as API.UserLoginRequest);
+              await handleSubmit(values as API.UserRequest);
             } else {
-              await handleEmailSubmit(values as API.UserEmailLoginRequest);
+              await handleEmailSubmit(values as API.UserRequest);
             }
           }}
         >

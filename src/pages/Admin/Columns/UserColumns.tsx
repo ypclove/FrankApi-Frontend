@@ -1,4 +1,6 @@
+import { UserGenderEnum } from '@/enum/commonEnum';
 import { ProColumns, ProFormColumnsType } from '@ant-design/pro-components';
+import { Tag } from 'antd';
 
 export const UserAddModalFormColumns: ProFormColumnsType<API.UserVO, 'text'>[] = [
   {
@@ -154,28 +156,28 @@ export const UserUpdateModalFormColumns: ProFormColumnsType<API.UserVO, 'text'>[
         })
       ]
     }
-  },
-  {
-    title: '密码',
-    key: 'userPassword',
-    dataIndex: 'userPassword',
-    width: 'lg',
-    colProps: {
-      span: 24
-    },
-    formItemProps: {
-      rules: [
-        () => ({
-          validator(_, value) {
-            if (value && value.length < 0) {
-              return Promise.reject(new Error('密码不能为空'));
-            }
-            return Promise.resolve();
-          }
-        })
-      ]
-    }
   }
+  // {
+  //   title: '密码',
+  //   key: 'userPassword',
+  //   dataIndex: 'userPassword',
+  //   width: 'lg',
+  //   colProps: {
+  //     span: 24
+  //   },
+  //   formItemProps: {
+  //     rules: [
+  //       () => ({
+  //         validator(_, value) {
+  //           if (value && value.length < 0) {
+  //             return Promise.reject(new Error('密码不能为空'));
+  //           }
+  //           return Promise.resolve();
+  //         }
+  //       })
+  //     ]
+  //   }
+  // }
 ];
 export const UserColumns: ProColumns<API.UserVO>[] = [
   {
@@ -190,7 +192,8 @@ export const UserColumns: ProColumns<API.UserVO>[] = [
     valueType: 'text',
     copyable: true,
     key: 'userAccount',
-    align: 'center'
+    align: 'center',
+    width: 70
   },
   {
     title: '头像',
@@ -246,12 +249,40 @@ export const UserColumns: ProColumns<API.UserVO>[] = [
     }
   },
   {
+    title: '状态',
+    align: 'center',
+    filters: true,
+    onFilter: true,
+    width: 60,
+    dataIndex: 'status',
+    key: 'status',
+    valueEnum: {
+      0: {
+        text: '正常',
+        status: 'Success'
+      },
+      1: {
+        text: '封禁',
+        status: 'Error'
+      }
+    }
+  },
+  {
     title: '性别',
+    align: 'center',
     dataIndex: 'gender',
     filters: true,
     onFilter: true,
     key: 'gender',
-    align: 'center',
+    valueType: 'text',
+    render: (_, record) => (
+      <Tag color={UserGenderEnum[record.gender ?? 'default']}>
+        {
+          // @ts-ignore
+          UserColumns.find((col) => col.dataIndex === 'gender')?.valueEnum[record.gender]?.text
+        }
+      </Tag>
+    ),
     valueEnum: {
       1: {
         text: '男'
@@ -262,20 +293,22 @@ export const UserColumns: ProColumns<API.UserVO>[] = [
     }
   },
   {
-    title: '更新时间',
-    dataIndex: 'updateTime',
-    valueType: 'dateTime',
-    key: 'updateTime',
-    search: false,
-    align: 'center'
-  },
-  {
     title: '创建时间',
     dataIndex: 'createTime',
     valueType: 'dateTime',
     key: 'createTime',
     search: false,
-    align: 'center'
+    align: 'center',
+    width: 100
+  },
+  {
+    title: '更新时间',
+    dataIndex: 'updateTime',
+    valueType: 'dateTime',
+    key: 'updateTime',
+    search: false,
+    align: 'center',
+    width: 100
   }
 ];
 

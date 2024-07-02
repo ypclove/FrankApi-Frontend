@@ -12,8 +12,8 @@ export type Props = {
   open: boolean;
   onCancel: () => void;
   data?: API.UserVO;
-  bindSubmit: (values: API.UserBindEmailRequest) => Promise<void>;
-  unbindSubmit: (values: API.UserUnBindEmailRequest) => Promise<void>;
+  bindSubmit: (values: API.UserRequest) => Promise<void>;
+  unbindSubmit: (values: API.UserRequest) => Promise<void>;
 };
 
 const EmailModal: React.FC<Props> = (props) => {

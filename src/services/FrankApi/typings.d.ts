@@ -1,9 +1,4 @@
 declare namespace API {
-  type banUserUsingPOSTParams = {
-    /** userId */
-    userId: number;
-  };
-
   type BaseResponseboolean = {
     code?: number;
     data?: boolean;
@@ -96,11 +91,6 @@ declare namespace API {
     productId: number;
   };
 
-  type deleteUserUsingDELETEParams = {
-    /** userId */
-    userId: number;
-  };
-
   type Field = {
     fieldName?: string;
     value?: string;
@@ -139,7 +129,7 @@ declare namespace API {
     sortOrder?: string;
     status?: number;
     url?: string;
-    userId: number;
+    userId?: number;
   };
 
   type getInterfaceListBySearchTextPageUsingGETParams = {
@@ -186,18 +176,20 @@ declare namespace API {
     total?: number;
   };
 
-  type getUserByIdUsingGETParams = {
-    /** userId */
-    userId: number;
-  };
-
   type getUserListByPageUsingGETParams = {
+    balance?: number;
+    captcha?: string;
+    checkPassword?: string;
     current?: number;
+    emailAccount?: string;
     gender?: number;
+    id?: number;
+    invitationCode?: string;
     pageSize?: number;
     sortField?: string;
     sortOrder?: string;
     userAccount?: string;
+    userPassword?: string;
     userRole?: number;
   };
 
@@ -283,11 +275,6 @@ declare namespace API {
     requestParams?: Field[];
     /** 用户请求参数 */
     userRequestParams?: string;
-  };
-
-  type normalUserUsingPOSTParams = {
-    /** userId */
-    userId: number;
   };
 
   type offlineInterfaceUsingPOSTParams = {
@@ -473,72 +460,25 @@ declare namespace API {
     biz?: string;
   };
 
-  type UserAddRequest = {
-    /** 用户性别 */
-    gender?: number;
-    /** 用户账号 */
-    userAccount?: string;
-    /** 密码 */
-    userPassword?: string;
-    /** 用户角色 */
-    userRole?: number;
-  };
-
-  type UserBindEmailRequest = {
-    /** 验证码 */
-    captcha?: string;
-    /** 邮箱 */
-    emailAccount?: string;
-  };
-
-  type UserEmailLoginRequest = {
-    /** 验证码 */
-    captcha?: string;
-    /** 邮箱 */
-    emailAccount?: string;
-  };
-
-  type UserEmailRegisterRequest = {
-    /** 验证码 */
-    captcha?: string;
-    /** 邮箱 */
-    emailAccount?: string;
-    /** 邀请码（可选） */
-    invitationCode?: string;
-  };
-
-  type UserLoginRequest = {
-    /** 用户账号 */
-    userAccount?: string;
-    /** 密码 */
-    userPassword?: string;
-  };
-
-  type UserRegisterRequest = {
-    /** 确认密码 */
-    checkPassword?: string;
-    /** 邀请码（可选） */
-    invitationCode?: string;
-    /** 用户账号 */
-    userAccount?: string;
-    /** 密码 */
-    userPassword?: string;
-  };
-
-  type UserUnBindEmailRequest = {
-    /** 验证码 */
-    captcha?: string;
-    /** 邮箱 */
-    emailAccount?: string;
-  };
-
-  type UserUpdateRequest = {
+  type UserRequest = {
     /** 积分 */
     balance?: number;
+    /** 验证码 */
+    captcha?: string;
+    /** 确认密码 */
+    checkPassword?: string;
+    current?: number;
+    /** 邮箱 */
+    emailAccount?: string;
     /** 用户性别 */
     gender?: number;
     /** 用户 Id */
     id?: number;
+    /** 邀请码（可选） */
+    invitationCode?: string;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
     /** 用户账号 */
     userAccount?: string;
     /** 密码 */
@@ -560,7 +500,6 @@ declare namespace API {
     updateTime?: string;
     userAccount?: string;
     userAvatar?: string;
-    userName?: string;
     userRole?: number;
   };
 }

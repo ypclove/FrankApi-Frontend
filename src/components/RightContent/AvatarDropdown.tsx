@@ -1,40 +1,45 @@
+import { valueLength } from '@/pages/User/UserInfo';
+import { userLogoutUsingPost } from '@/services/FrankApi/userController';
 import { LoginOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { history, useModel } from '@umijs/max';
-import { stringify } from 'querystring';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 import React, { useCallback } from 'react';
 import { flushSync } from 'react-dom';
-import HeaderDropdown from '../HeaderDropdown';
-import { valueLength } from '@/pages/User/UserInfo';
-import { userLogoutUsingPost } from '@/services/FrankApi/userController';
 import Settings from '../../../config/defaultSettings';
+import HeaderDropdown from '../HeaderDropdown';
 
 export type GlobalHeaderRightProps = {
   menu?: boolean;
   children?: React.ReactNode;
 };
 
+/**
+ * 用户头像和用户名
+ * @constructor
+ */
 export const AvatarName = () => {
   const { initialState } = useModel('@@initialState');
   const { loginUser } = initialState || {};
   return (
-    <p className="anticon">{valueLength(loginUser?.userName) ? loginUser?.userName : '无名氏'}</p>
+    <p className="anticon">
+      {valueLength(loginUser?.userAccount) ? loginUser?.userAccount : '无名氏'}
+    </p>
   );
 };
 
 export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ children }) => {
   const { initialState, setInitialState } = useModel('@@initialState');
   const { loginUser } = initialState || {};
+
   /**
-   * 退出登录，并且将当前的 url 保存
+   * 退出登录
    */
   const loginOut = async () => {
     await userLogoutUsingPost();
-    const { search, pathname } = window.location;
+    // const { search, pathname } = window.location;
     const urlParams = new URL(window.location.href).searchParams;
     /** 此方法会跳转到 redirect 参数所在的位置 */
     const redirect = urlParams.get('redirect');
-    // Note: There may be security issues, please note
     if (window.location.pathname !== '/user/login' && !redirect) {
       if (initialState?.settings.navTheme === 'light') {
         setInitialState({ loginUser: {}, settings: { ...Settings, navTheme: 'light' } });
@@ -42,10 +47,11 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ children }) =
         setInitialState({ loginUser: {}, settings: { ...Settings, navTheme: 'realDark' } });
       }
       history.replace({
-        pathname: '/user/login',
-        search: stringify({
-          redirect: pathname + search
-        })
+        pathname: '/user/login'
+        // 不保存当前页面的 url，下次登录进来直接 /welcome
+        // search: stringify({
+        //   redirect: pathname + search
+        // })
       });
     }
   };

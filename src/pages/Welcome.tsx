@@ -15,7 +15,6 @@ const InfoCard: React.FC<{
   href: string;
 }> = ({ title, href, index, desc }) => {
   const { useToken } = theme;
-
   const { token } = useToken();
 
   return (
@@ -86,17 +85,21 @@ const InfoCard: React.FC<{
 const Welcome: React.FC = () => {
   const { token } = theme.useToken();
   const { initialState } = useModel('@@initialState');
+  const { loginUser } = initialState || {};
+
   return (
     <PageContainer>
       <Card
         style={{
           borderRadius: 8
         }}
-        bodyStyle={{
-          backgroundImage:
-            initialState?.settings?.navTheme === 'realDark'
-              ? 'background-image: linear-gradient(75deg, #1A1B1F 0%, #191C1F 100%)'
-              : 'background-image: linear-gradient(75deg, #FBFDFF 0%, #F5F7FF 100%)'
+        styles={{
+          body: {
+            backgroundImage:
+              initialState?.settings?.navTheme === 'realDark'
+                ? 'background-image: linear-gradient(75deg, #1A1B1F 0%, #191C1F 100%)'
+                : 'background-image: linear-gradient(75deg, #FBFDFF 0%, #F5F7FF 100%)'
+          }
         }}
       >
         <div
@@ -114,7 +117,7 @@ const Welcome: React.FC = () => {
               color: token.colorTextHeading
             }}
           >
-            欢迎使用 FrankAPI 接口开放平台
+            {loginUser?.userAccount}，欢迎使用 FrankAPI 接口开放平台
           </div>
           <p
             style={{
