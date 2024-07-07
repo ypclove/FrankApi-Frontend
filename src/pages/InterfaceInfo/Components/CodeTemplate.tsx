@@ -1,41 +1,55 @@
+import {InterfaceRequestMethodEnum} from '@/enum/commonEnum';
 import {ProColumns} from '@ant-design/pro-components';
 
 /**
- * axios代码示例
- * @param url
- * @param method
+ * Axios 代码示例
+ * @param url 请求地址
+ * @param method 请求方法
  */
-export const axiosExample = (url?: string, method?: string) =>
-  `axios.${method}('${url}')
+export const axiosExample = (url?: string, method?: number) => {
+  // @ts-ignore
+  const methodText = InterfaceRequestMethodEnum[method]?.text || '';
+  return `axios.${methodText.toLowerCase()}('${url}')
     .then(response => {
       console.log(response.data);
     })
     .catch(error => {
-      console.error('请求发生错误:', error);
+      console.error('请求发生错误：', error);
     });`;
-export const javaExample = (url?: string, method?: string) =>
-  `    @Resource
-    private ApiService apiService;
+};
 
-    public Object request() {
-        BaseResponse baseResponse;
-        try {
-            CurrencyRequest currencyRequest = new CurrencyRequest();
-            currencyRequest.setPath("${url}");
-            currencyRequest.setMethod("${method}");
-            currencyRequest.setRequestParams("你的请求参数,详细请前往开发者在线文档📘查看");
-            baseResponse = apiService.request(currencyRequest);
-            System.out.println("data = " + baseResponse.getData());
-        } catch (BusinessException e) {
-            log.error(e.getMessage());
-        }
-        return baseResponse.getData();
-    }`;
+/**
+ * Java 代码示例
+ * @param url 请求地址
+ * @param method 请求方法
+ */
+export const javaExample = (url?: string, method?: number) => {
+  // @ts-ignore
+  const methodText = InterfaceRequestMethodEnum[method]?.text || '';
+  return `@Resource
+private ApiService apiService;
+
+public Object request() {
+    BaseResponse baseResponse;
+    try {
+        CurrencyRequest currencyRequest = new CurrencyRequest();
+        currencyRequest.setPath("${url}");
+        currencyRequest.setMethod("${methodText.toLowerCase()}");
+        currencyRequest.setRequestParams("请求参数详细请前往开发者在线文档📘查看");
+        baseResponse = apiService.request(currencyRequest);
+        System.out.println("data = " + baseResponse.getData());
+    } catch (BusinessException e) {
+        log.error(e.getMessage());
+    }
+    return baseResponse.getData();
+}`;
+};
+
 /**
  * 返回示例
  */
 export const returnExample =
-  '{\n' + '    "code": 0,\n' + '    "data": {} ,\n' + '    "msg": "success"\n' + '}';
+  '{\n' + '    "code": 20000,\n' + '    "data": {} ,\n' + '    "msg": "success"\n' + '}';
 
 export const responseParameters = [
   {
@@ -123,7 +137,7 @@ export const convertResponseParams = (params?: [API.RequestParamsField]) => {
       if (index === keys.length - 1) {
         if (param.type === 'int' && key === 'code') {
           // @ts-ignore
-          currentObj[key] = 0;
+          currentObj[key] = 20000;
         } else {
           // @ts-ignore
           currentObj[key] = param.desc || '';
@@ -138,5 +152,5 @@ export const convertResponseParams = (params?: [API.RequestParamsField]) => {
   });
   // @ts-ignore
   const mergedResult = { code: codeObj.code, ...result, message: messageObj.message };
-  return JSON.stringify(mergedResult, null, 2);
+  return JSON.stringify(mergedResult, null, 4);
 };

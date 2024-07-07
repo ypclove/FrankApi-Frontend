@@ -4,6 +4,7 @@ import '@umijs/max';
 import { Button } from 'antd';
 
 export type SiderTheme = 'light' | 'dark';
+
 export const Release = () => {
   return (
     <Button shape="round" key="1">
@@ -33,5 +34,5 @@ export const helloWord = `
 | |  | | | (_| | | | |   <  / ____ \\| |_) | |
 |_|  |_|  \\__,_|_| |_|_|\\_\\/_/    \\_\\ .__/|_|
                                     | |
-                                    |_|      
+                                    |_|
 `;

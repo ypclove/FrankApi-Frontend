@@ -49,10 +49,12 @@ const ApiTab: React.FC<Props> = (props) => {
         <Column title="类型" dataIndex="type" key="type" />
         <Column title="描述" dataIndex="desc" key="desc" />
       </Table>
-      {/*<p className="highlightLine" style={{marginTop: 15}}>请求示例：</p>*/}
+      <p className="highlightLine" style={{ marginTop: 15 }}>
+        请求示例
+      </p>
       <a onClick={() => sampleCode?.()}>见示例代码</a>
       <p className="highlightLine" style={{ marginTop: 15 }}>
-        返回示例
+        响应示例
       </p>
       <CodeHighlighting codeString={returnCode} language={'javascript'} />
     </>

@@ -302,6 +302,7 @@ const InterfaceInfoList: React.FC = () => {
       />
       <ModalForm
         title={'添加接口'}
+        // @ts-ignore
         value={{}}
         open={() => {
           return createModalOpen;

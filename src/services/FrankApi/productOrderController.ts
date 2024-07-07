@@ -4,7 +4,6 @@ import {request} from '@umijs/max';
 
 /** closeProductOrder POST /api/order/close/${param0} */
 export async function closeProductOrderUsingPost(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.closeProductOrderUsingPOSTParams,
   options?: { [key: string]: any }
 ) {
@@ -33,7 +32,6 @@ export async function createOrderUsingPost(
 
 /** deleteProductOrder DELETE /api/order/delete/${param0} */
 export async function deleteProductOrderUsingDelete(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.deleteProductOrderUsingDELETEParams,
   options?: { [key: string]: any }
 ) {
@@ -60,7 +58,6 @@ export async function getProductOrderByIdUsingGet(
 
 /** getProductOrderListByPage GET /api/order/list/page */
 export async function getProductOrderListByPageUsingGet(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getProductOrderListByPageUsingGETParams,
   options?: { [key: string]: any }
 ) {

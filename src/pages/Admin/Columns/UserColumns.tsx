@@ -276,21 +276,8 @@ export const UserColumns: ProColumns<API.UserVO>[] = [
     key: 'gender',
     valueType: 'text',
     render: (_, record) => (
-      <Tag color={UserGenderEnum[record.gender ?? 'default']}>
-        {
-          // @ts-ignore
-          UserColumns.find((col) => col.dataIndex === 'gender')?.valueEnum[record.gender]?.text
-        }
-      </Tag>
-    ),
-    valueEnum: {
-      1: {
-        text: '男'
-      },
-      0: {
-        text: '女'
-      }
-    }
+      <Tag color={UserGenderEnum[record.gender]?.color}>{UserGenderEnum[record.gender]?.text}</Tag>
+    )
   },
   {
     title: '创建时间',

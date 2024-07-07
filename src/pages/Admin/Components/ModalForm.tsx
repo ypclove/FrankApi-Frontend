@@ -41,6 +41,7 @@ const ModalForm: React.FC<Props> = (props) => {
         autoFocusFirstInput
         layoutType={'ModalForm'}
         onFinish={async (value) => {
+          // @ts-ignore
           onSubmit?.(value);
         }}
         grid={true}

@@ -92,7 +92,7 @@ const InterfaceSquare: React.FC = () => {
           dataSource={data}
           renderItem={(item, index) => (
             <List.Item>
-              <ProCard key={index} bordered hoverable direction="column" style={{ height: 270 }}>
+              <ProCard key={index} bordered hoverable direction="column" style={{ height: 200 }}>
                 <ProCard
                   layout="center"
                   onClick={() => {

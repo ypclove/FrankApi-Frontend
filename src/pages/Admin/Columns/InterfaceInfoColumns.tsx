@@ -402,28 +402,10 @@ const InterfaceInfoColumns: ProColumns<API.InterfaceInfo>[] = [
     valueType: 'text',
     key: 'method',
     render: (_, record) => (
-      <Tag color={InterfaceRequestMethodEnum[record.method ?? 'default']}>
-        {
-          // @ts-ignore
-          InterfaceInfoColumns.find((col) => col.dataIndex === 'method')?.valueEnum[record.method]
-            ?.text
-        }
+      <Tag color={InterfaceRequestMethodEnum[record.method]?.color}>
+        {InterfaceRequestMethodEnum[record.method]?.text}
       </Tag>
-    ),
-    valueEnum: {
-      1: {
-        text: 'GET'
-      },
-      2: {
-        text: 'POST'
-      },
-      3: {
-        text: 'PUT'
-      },
-      4: {
-        text: 'DELETE'
-      }
-    }
+    )
   }
 ];
 

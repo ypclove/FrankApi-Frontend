@@ -31,7 +31,7 @@ const UserList: React.FC = () => {
    * 添加用户
    * @param fields 添加用户的字段
    */
-  const handleAdd = async (fields: API.UserRequest) => {
+  const handleAdd = async (fields: API.UserAddRequest) => {
     const hide = message.loading('正在添加');
     try {
       const res = await addUserUsingPost({
@@ -57,7 +57,7 @@ const UserList: React.FC = () => {
    * 更新用户
    * @param fields 用户修改的字段
    */
-  const handleUpdate = async (fields: API.UserRequest) => {
+  const handleUpdate = async (fields: API.UserUpdateRequest) => {
     const hide = message.loading('修改中');
     try {
       const res = await updateUserUsingPost({ id: currentRow?.id, ...fields });
@@ -78,14 +78,12 @@ const UserList: React.FC = () => {
 
   /**
    * 删除用户
-   * @param record 用户
+   * @param userId 用户 Id
    */
-  const handleRemove = async (record: API.UserRequest) => {
+  const handleRemove = async (userId: number | undefined) => {
     const hide = message.loading('正在删除');
     try {
-      const res = await deleteUserUsingDelete({
-        id: record.id
-      });
+      const res = await deleteUserUsingDelete(userId);
       hide();
       if (res.data && res.code === 20000) {
         message.success('删除成功');
@@ -101,21 +99,20 @@ const UserList: React.FC = () => {
 
   /**
    * 封号
-   * @param record 用户
+   * @param userId 用户 Id
    */
-  const handleBanUser = async (record: API.UserRequest) => {
+  const handleBanUser = async (userId: number | undefined) => {
     const hide = message.loading('封号中');
     try {
-      const res = await banUserUsingPost({
-        id: record.id
-      });
+      const res = await banUserUsingPost(userId);
+      console.log('风景', res);
       hide();
       if (res.data && res.code === 20000) {
         message.success('封号成功');
         actionRef.current?.reload();
         return true;
       } else {
-        message.error('封禁失败');
+        message.error(res.msg);
         return false;
       }
     } catch (error: any) {
@@ -127,14 +124,12 @@ const UserList: React.FC = () => {
 
   /**
    * 解封
-   * @param record 用户
+   * @param userId 用户 Id
    */
-  const handleNormalUser = async (record: API.UserRequest) => {
+  const handleNormalUser = async (userId: number | undefined) => {
     const hide = message.loading('解封中');
     try {
-      const res = await normalUserUsingPost({
-        id: record.id
-      });
+      const res = await normalUserUsingPost(userId);
       hide();
       if (res.data && res.code === 20000) {
         message.success('解封成功');
@@ -176,7 +171,7 @@ const UserList: React.FC = () => {
           <Popconfirm
             key={'Normal'}
             title="请确认是否解封该用户？"
-            onConfirm={() => handleNormalUser(record)}
+            onConfirm={() => handleNormalUser(record.id)}
             onCancel={cancel}
             okText="是"
             cancelText="否"
@@ -197,7 +192,7 @@ const UserList: React.FC = () => {
           <Popconfirm
             key={'Ban'}
             title="请确认是否封禁该用户？"
-            onConfirm={() => handleBanUser(record)}
+            onConfirm={() => handleBanUser(record.id)}
             onCancel={cancel}
             okText="是"
             cancelText="否"
@@ -218,7 +213,7 @@ const UserList: React.FC = () => {
         <Popconfirm
           key={'Delete'}
           title="请确认是否删除该用户？"
-          onConfirm={() => handleRemove(record)}
+          onConfirm={() => handleRemove(record.id)}
           onCancel={cancel}
           okText="是"
           cancelText="否"
@@ -282,6 +277,7 @@ const UserList: React.FC = () => {
       />
       <ModalForm
         title={'添加用户'}
+        // @ts-ignore
         value={{}}
         open={() => {
           return createModalOpen;
@@ -305,6 +301,7 @@ const UserList: React.FC = () => {
         open={() => {
           return updateModalOpen;
         }}
+        // @ts-ignore
         value={currentRow}
         onOpenChange={handleUpdateModalOpen}
         onSubmit={async (value) => {

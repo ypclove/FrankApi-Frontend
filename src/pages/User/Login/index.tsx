@@ -31,6 +31,18 @@ const Login: React.FC = () => {
   });
 
   /**
+   * 设置用户登录状态：设置用户登录有效期为 1 周
+   * @param userInfo 用户登录信息
+   */
+  const setLoginStatus = (userInfo: API.UserVO) => {
+    // 一周的毫秒数
+    const oneWeekInMs = 7 * 24 * 60 * 60 * 1000;
+    // 将过期时间转化为 ISO 格式的字符串
+    const expirationDate = new Date(Date.now() + oneWeekInMs).toISOString();
+    localStorage.setItem('loginUserStatus', JSON.stringify({ userInfo, expirationDate }));
+  };
+
+  /**
    * 登录
    * @param res 登录参数
    */
@@ -39,10 +51,13 @@ const Login: React.FC = () => {
       message.success('登录成功');
       // 登录成功后将用户信息保存到 initialState 中
       setInitialState({ loginUser: res.data, settings: Settings });
+      // 同时保存到 localStorage，防止页面刷新时，用户状态失效
+      // localStorage.setItem('loginUser', JSON.stringify(res.data));
+      setLoginStatus(res.data);
       setTimeout(() => {
         const urlParams = new URL(window.location.href).searchParams;
         history.push(urlParams.get('redirect') || '/');
-      }, 100);
+      }, 500);
     }
   };
 
@@ -50,7 +65,7 @@ const Login: React.FC = () => {
    * 平台登录
    * @param values 平台登录请求参数
    */
-  const handleSubmit = async (values: API.UserRequest) => {
+  const handleSubmit = async (values: API.UserLoginRequest) => {
     try {
       // 登录
       const res = await userLoginUsingPost({
@@ -66,7 +81,7 @@ const Login: React.FC = () => {
    * 邮箱登录
    * @param values 邮箱登录请求参数
    */
-  const handleEmailSubmit = async (values: API.UserRequest) => {
+  const handleEmailSubmit = async (values: API.UserEmailLoginRequest) => {
     try {
       // 登录
       const res = await userEmailLoginUsingPost({
@@ -104,9 +119,9 @@ const Login: React.FC = () => {
           }}
           onFinish={async (values) => {
             if (type === 'account') {
-              await handleSubmit(values as API.UserRequest);
+              await handleSubmit(values as API.UserLoginRequest);
             } else {
-              await handleEmailSubmit(values as API.UserRequest);
+              await handleEmailSubmit(values as API.UserEmailLoginRequest);
             }
           }}
         >

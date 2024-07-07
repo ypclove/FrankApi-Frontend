@@ -1,6 +1,6 @@
 import CodeHighlighting from '@/components/CodeHighlighting';
 import { API_SDK, INTERFACE_DEV_DOC } from '@/constant';
-import { InterfaceRequestMethodEnum, statusEnum } from '@/enum/commonEnum';
+import { InterfaceRequestMethodEnum, InterfaceStatusEnum } from '@/enum/commonEnum';
 import { errorCode } from '@/enum/ErrorCodeEnum';
 import ApiTab from '@/pages/InterfaceInfo/Components/ApiTab';
 import {
@@ -55,6 +55,10 @@ const InterfaceInfo: React.FC = () => {
     process.env.NODE_ENV === 'production' ? INTERFACE_DEV_DOC : 'http://localhost:8080';
   const { initialState } = useModel('@@initialState');
   const { loginUser } = initialState || {};
+  /**
+   * 加载数据
+   * @param interfaceId 接口 Id
+   */
   const loadedData = async (interfaceId: number | undefined) => {
     if (!params.id) {
       message.error('参数不存在');
@@ -62,8 +66,8 @@ const InterfaceInfo: React.FC = () => {
     }
     setLoading(true);
     try {
-      // @ts-ignore
       const res = await getInterfaceByIdUsingGet(interfaceId);
+      console.log('接口详情', res);
       if (res.data && res.code === 20000) {
         setDate(res.data || {});
         setTotalInvokes(res.data.totalInvokes || 0);
@@ -80,8 +84,8 @@ const InterfaceInfo: React.FC = () => {
           ? JSON.parse(res.data.responseParams)
           : ([] as API.RequestParamsField);
         const convertedParams = convertResponseParams(response);
-        setAxiosCode(axiosExample(res.data?.url, res.data?.method?.toLowerCase()));
-        setJavaCode(javaExample(res.data?.url, res.data?.method?.toUpperCase()));
+        setAxiosCode(axiosExample(res.data?.url, res.data?.method));
+        setJavaCode(javaExample(res.data?.url, res.data?.method));
         setReturnCode(convertedParams);
       }
       setLoading(false);
@@ -89,9 +93,10 @@ const InterfaceInfo: React.FC = () => {
       message.error(e.message);
     }
   };
+
   useEffect(() => {
-    loadedData();
-  }, []);
+    loadedData(params.id ? Number(params.id) : undefined);
+  }, [params.id]);
 
   const requestExampleTabChange = (key: string) => {
     setRequestExampleActiveTabKey(key);
@@ -141,7 +146,6 @@ const InterfaceInfo: React.FC = () => {
   ];
 
   const onSearch = async (values: any) => {
-    // 未登录跳转到登录页面
     if (!loginUser) {
       history.replace({
         pathname: '/user/login',
@@ -222,11 +226,12 @@ const InterfaceInfo: React.FC = () => {
     )
   };
 
+  // @ts-ignore
   return (
     <Spin spinning={loading}>
       <Card title={data?.name}>
-        <Descriptions>
-          <Descriptions.Item key={'url'} label={'接口地址'}>
+        <Descriptions bordered>
+          <Descriptions.Item key={'url'} label="接口地址">
             <Paragraph copyable>{data?.url}</Paragraph>
           </Descriptions.Item>
           <Descriptions.Item key={'returnFormat'} label="返回格式">
@@ -236,21 +241,24 @@ const InterfaceInfo: React.FC = () => {
             {data?.reduceScore}个
           </Descriptions.Item>
           <Descriptions.Item key={'request'} label="请求方式">
-            {' '}
-            <Tag color={InterfaceRequestMethodEnum[data?.method ?? 'default']}>{data?.method}</Tag>
+            {/*@ts-ignore*/}
+            <Tag color={InterfaceRequestMethodEnum[data?.method]?.color ?? 'default'}>
+              {/*@ts-ignore*/}
+              {InterfaceRequestMethodEnum[data?.method]?.text}
+            </Tag>
           </Descriptions.Item>
-          <Descriptions.Item key={'totalInvokes'} label="调用总次数">
+          <Descriptions.Item key={'totalInvokes'} label="调用次数">
             {totalInvokes}次
           </Descriptions.Item>
           <Descriptions.Item key={'status'} label={'接口状态'}>
             {data && data.status === 0 ? (
-              <Badge status="default" text={statusEnum[data.status]} />
+              <Badge status="error" text={InterfaceStatusEnum[data.status].text} />
             ) : null}
             {data && data.status === 1 ? (
-              <Badge status="processing" text={statusEnum[data.status]} />
+              <Badge status="success" text={InterfaceStatusEnum[data.status].text} />
             ) : null}
             {data && data.status === 2 ? (
-              <Badge status="error" text={statusEnum[data.status]} />
+              <Badge status="processing" text={InterfaceStatusEnum[data.status].text} />
             ) : null}
           </Descriptions.Item>
           <Descriptions.Item key={'description'} label="接口描述">
@@ -267,8 +275,8 @@ const InterfaceInfo: React.FC = () => {
           </Descriptions.Item>
         </Descriptions>
       </Card>
-      <Card>
-        <p className="highlightLine">接口详细描述请前往开发者在线文档查看：</p>
+      <Card style={{ marginTop: '18px' }}>
+        <p className="highlightLine">接口详细描述请前往开发者在线文档查看</p>
         <a href={`${docUrl}/pages/${data?.id}/#${data?.name}`} target={'_blank'} rel="noreferrer">
           📘 接口在线文档：{data?.name}
         </a>
@@ -286,7 +294,7 @@ const InterfaceInfo: React.FC = () => {
       {activeTabKey === 'sampleCode' && requestExampleActiveTabKey === 'javadoc' && (
         <ProCard
           type="inner"
-          title={<strong>开发者 SDK（快速接入API接口）</strong>}
+          title={<strong>开发者 SDK（快速接入 API 接口）</strong>}
           bordered
           extra={
             <Link to="/account/center">

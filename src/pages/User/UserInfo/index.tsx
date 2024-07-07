@@ -308,7 +308,7 @@ const UserInfo: React.FC = () => {
    * 邮箱绑定请求
    * @param values 邮箱绑定请求
    */
-  const handleBindEmailSubmit = async (values: API.UserRequest) => {
+  const handleBindEmailSubmit = async (values: API.UserBindEmailRequest) => {
     try {
       const res = await userBindEmailUsingPost({
         ...values
@@ -335,7 +335,7 @@ const UserInfo: React.FC = () => {
    * 邮箱解绑
    * @param values 邮箱解绑请求
    */
-  const handleUnBindEmailSubmit = async (values: API.UserRequest) => {
+  const handleUnBindEmailSubmit = async (values: API.UserUnBindEmailRequest) => {
     try {
       const res = await userUnBindEmailUsingPost({ ...values });
       if (res.data && res.code === 20000) {

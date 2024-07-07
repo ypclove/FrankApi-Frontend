@@ -1,15 +1,28 @@
+/**
+ * 接口请求方式枚举
+ */
 export const InterfaceRequestMethodEnum: any = {
-  1: 'blue',
-  2: 'red',
-  3: 'green',
-  4: 'orange'
+  1: {
+    color: 'blue',
+    text: 'GET'
+  },
+  2: {
+    color: 'red',
+    text: 'POST'
+  },
+  3: {
+    color: 'green',
+    text: 'PUT'
+  },
+  4: {
+    color: 'orange',
+    text: 'DELETE'
+  }
 };
 
-export const UserGenderEnum: any = {
-  0: 'orange',
-  1: 'blue'
-};
-
+/**
+ * 接口状态枚举
+ */
 export const InterfaceStatusEnum: any = {
   0: {
     text: '关闭',
@@ -25,10 +38,18 @@ export const InterfaceStatusEnum: any = {
   }
 };
 
-export const statusEnum: any = {
-  0: '关闭',
-  1: '开启',
-  2: '审核中'
+/**
+ * 用户性别枚举
+ */
+export const UserGenderEnum: any = {
+  0: {
+    color: 'pink',
+    text: '女'
+  },
+  1: {
+    color: 'blue',
+    text: '男'
+  }
 };
 
 export const productTypeColorEnum: any = {

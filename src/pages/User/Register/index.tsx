@@ -52,7 +52,6 @@ const Register: React.FC = () => {
 
   const doRegister = (res: any) => {
     if (res.data && res.code === 20000) {
-      console.log('成功');
       message.success('注册成功');
       setTimeout(() => {
         history.push('/user/login');
@@ -60,21 +59,19 @@ const Register: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (values: API.UserRequest) => {
-    // try {
-    // 登录
-    const res = await userRegisterUsingPost({
-      ...values
-    });
-    doRegister(res);
-    // }
-    // catch (error) {
-    //   const defaultLoginFailureMessage = '注册失败，请重试！';
-    //   message.error(defaultLoginFailureMessage);
-    // }
+  const handleSubmit = async (values: API.UserRegisterRequest) => {
+    try {
+      // 登录
+      const res = await userRegisterUsingPost({
+        ...values
+      });
+      doRegister(res);
+    } catch (error) {
+      message.error('注册失败，请重试！');
+    }
   };
 
-  const handleEmailSubmit = async (values: API.UserRequest) => {
+  const handleEmailSubmit = async (values: API.UserEmailRegisterRequest) => {
     try {
       // 登录
       const res = await userEmailRegisterUsingPost({
@@ -119,9 +116,9 @@ const Register: React.FC = () => {
           }}
           onFinish={async (values) => {
             if (type === 'account') {
-              await handleSubmit(values as API.UserRequest);
+              await handleSubmit(values as API.UserRegisterRequest);
             } else {
-              await handleEmailSubmit(values as API.UserRequest);
+              await handleEmailSubmit(values as API.UserEmailRegisterRequest);
             }
           }}
         >

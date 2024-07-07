@@ -43,7 +43,7 @@ const GetGiftModal: React.FC<Props> = (props) => {
               color: 'red'
             }}
           >
-            100积分
+            100 积分
           </p>
         </ProCard>
         <ProCard layout="center">

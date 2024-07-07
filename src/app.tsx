@@ -38,24 +38,34 @@ const baiduStatistics = () => {
 };
 
 /**
- * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
- * */
+ * 从 localStorage 取用户状态
+ * 1. 如果没有没有过期，更新 loginUser
+ * 2. 如果过期了，移除 localStorage 并让用户登录
+ */
 export async function getInitialState(): Promise<InitialState> {
-  // console.log(`%c${helloWord}`, 'color:#e59de3');
-  // 取消自动登录
-  // try {
-  //   const res = await getLoginUserUsingGet();
-  //   if (res.data && res.code === 20000) {
-  //     stats.loginUser = res.data;
-  //   }
-  // } catch (error) {
-  //   history.push(loginPath);
-  // }
+  try {
+    const loginStatusStr = localStorage.getItem('loginUserStatus');
+    if (loginStatusStr) {
+      const { userInfo, expirationDate } = JSON.parse(loginStatusStr);
+      // 获取当前日期的 ISO 格式前 10 位，即"YYYY-MM-DD"
+      const now = new Date().toISOString();
+      if (now <= expirationDate) {
+        // 登录状态有效，设置到 initialState 中
+        stats.loginUser = userInfo;
+      } else {
+        // 登录状态过期，从 localStorage 中移除
+        localStorage.removeItem('loginUserStatus');
+        history.push(loginPath);
+      }
+    }
+  } catch (error) {
+    // @ts-ignore
+    message.error(error.message);
+    history.push(loginPath);
+  }
   return stats;
 }
 
-// ProLayout 支持的api https://procomponents.ant.design/components/layout
-// ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
     actionsRender: () => [<Docs key="doc" />],

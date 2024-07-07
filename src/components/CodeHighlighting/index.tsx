@@ -18,6 +18,7 @@ const CodeHighlighting = (props: tProps) => {
   const handleCopy = () => {
     message.success('已复制到粘贴板');
   };
+  // @ts-ignore
   return (
     <div
       style={{ position: 'relative' }}
@@ -29,6 +30,7 @@ const CodeHighlighting = (props: tProps) => {
       }}
     >
       {isHovered && (
+        // @ts-ignore
         <CopyToClipboard text={codeString} onCopy={handleCopy}>
           <CopyOutlined
             style={{

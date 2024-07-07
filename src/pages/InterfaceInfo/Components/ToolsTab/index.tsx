@@ -1,5 +1,6 @@
 import CodeHighlighting from '@/components/CodeHighlighting';
 import ParamsTable from '@/components/ParamsTable';
+import { InterfaceRequestMethodEnum } from '@/enum/commonEnum';
 import { DEFAULT_ADD_FIELD, requestParam } from '@/pages/InterfaceInfo/Components/CodeTemplate';
 import '@umijs/max';
 import { Button, Empty, Form, Select, Space, Spin } from 'antd';
@@ -30,7 +31,8 @@ const ToolsTab: React.FC<Props> = (props) => {
   const selectAfter = (
     <Select
       disabled
-      defaultValue={data?.method}
+      // @ts-ignore
+      defaultValue={InterfaceRequestMethodEnum[data?.method]?.text}
       style={{ width: 120 }}
       options={[
         { value: 'GET', label: 'GET', disabled: true },
@@ -58,12 +60,12 @@ const ToolsTab: React.FC<Props> = (props) => {
             style={{ maxWidth: 600 }}
             value={data?.url}
             addonBefore={selectAfter}
-            enterButton="发起请求"
+            enterButton="发送"
             onSearch={form.submit}
           />
         </div>
         <p className="highlightLine" style={{ marginTop: 25 }}>
-          请求参数设置：
+          请求参数设置
         </p>
         <Form.Item name={'requestParams'}>
           <ParamsTable
@@ -84,13 +86,13 @@ const ToolsTab: React.FC<Props> = (props) => {
         </Form.Item>
       </Form>
       <p className="highlightLine" style={{ marginTop: 25 }}>
-        返回结果：
+        响应结果
       </p>
       <Spin spinning={resultLoading}>
         {result ? (
           <CodeHighlighting codeString={result} language={requestExampleActiveTabKey} />
         ) : (
-          <Empty description={'未发起调用，暂无请求信息'} />
+          <Empty description={'未发起请求，暂无请求信息'} />
         )}
       </Spin>
     </>

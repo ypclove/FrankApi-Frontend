@@ -1,115 +1,111 @@
 // @ts-ignore
 /* eslint-disable */
-import { request } from '@umijs/max';
+import {request} from '@umijs/max';
 
 /** addUser POST /api/user/add */
-export async function addUserUsingPost(body: API.UserRequest, options?: { [key: string]: any }) {
+export async function addUserUsingPost(body: API.UserAddRequest, options?: { [key: string]: any }) {
   return request<API.BaseResponselong>('/api/user/add', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     data: body,
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
-/** banUser POST /api/user/ban/ */
-export async function banUserUsingPost(body: API.UserRequest, options?: { [key: string]: any }) {
-  return request<API.BaseResponseboolean>('/api/user/ban/', {
+/** banUser POST /api/user/ban/${userId} */
+export async function banUserUsingPost(
+  userId: number | undefined,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseboolean>(`/api/user/ban/${userId}`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
 /** userBindEmail POST /api/user/bindEmail */
 export async function userBindEmailUsingPost(
-  body: API.UserRequest,
-  options?: { [key: string]: any },
+  body: API.UserBindEmailRequest,
+  options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseUserVO>('/api/user/bindEmail', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     data: body,
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
-/** deleteUser DELETE /api/user/delete */
+/** deleteUser DELETE /api/user/delete/${userId} */
 export async function deleteUserUsingDelete(
-  body: API.UserRequest,
-  options?: { [key: string]: any },
+  userId: number | undefined,
+  options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseboolean>('/api/user/delete', {
+  return request<API.BaseResponseboolean>(`/api/user/delete/${userId}`, {
     method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
 /** userEmailLogin POST /api/user/email/login */
 export async function userEmailLoginUsingPost(
-  body: API.UserRequest,
-  options?: { [key: string]: any },
+  body: API.UserEmailLoginRequest,
+  options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseUserVO>('/api/user/email/login', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     data: body,
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
 /** userEmailRegister POST /api/user/email/register */
 export async function userEmailRegisterUsingPost(
-  body: API.UserRequest,
-  options?: { [key: string]: any },
+  body: API.UserEmailRegisterRequest,
+  options?: { [key: string]: any }
 ) {
   return request<API.BaseResponselong>('/api/user/email/register', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     data: body,
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
-/** getUserById GET /api/user/get/ */
-export async function getUserByIdUsingGet(body: API.UserRequest, options?: { [key: string]: any }) {
-  return request<API.BaseResponseUserVO>('/api/user/get/', {
+/** getUserById GET /api/user/get/${param0} */
+export async function getUserByIdUsingGet(
+  params: API.getUserByIdUsingGETParams,
+  options?: { [key: string]: any }
+) {
+  const { userId: param0, ...queryParams } = params;
+  return request<API.BaseResponseUserVO>(`/api/user/get/${param0}`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
-    ...(options || {}),
+    params: { ...queryParams },
+    ...(options || {})
   });
 }
 
 /** getUserByInvitationCode POST /api/user/get/invitationCode */
 export async function getUserByInvitationCodeUsingPost(
   body: string,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseUserVO>('/api/user/get/invitationCode', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     data: body,
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
@@ -117,49 +113,50 @@ export async function getUserByInvitationCodeUsingPost(
 export async function getLoginUserUsingGet(options?: { [key: string]: any }) {
   return request<API.BaseResponseUserVO>('/api/user/get/login', {
     method: 'GET',
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
 /** getCaptcha GET /api/user/getCaptcha */
 export async function getCaptchaUsingGet(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getCaptchaUsingGETParams,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseboolean>('/api/user/getCaptcha', {
     method: 'GET',
     params: {
-      ...params,
+      ...params
     },
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
 /** getUserListByPage GET /api/user/list/page */
 export async function getUserListByPageUsingGet(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getUserListByPageUsingGETParams,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
   return request<API.BaseResponsePageUserVO>('/api/user/list/page', {
     method: 'GET',
     params: {
-      ...params,
+      ...params
     },
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
 /** userLogin POST /api/user/login */
-export async function userLoginUsingPost(body: API.UserRequest, options?: { [key: string]: any }) {
+export async function userLoginUsingPost(
+  body: API.UserLoginRequest,
+  options?: { [key: string]: any }
+) {
   return request<API.BaseResponseUserVO>('/api/user/login', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     data: body,
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
@@ -167,61 +164,63 @@ export async function userLoginUsingPost(body: API.UserRequest, options?: { [key
 export async function userLogoutUsingPost(options?: { [key: string]: any }) {
   return request<API.BaseResponseboolean>('/api/user/logout', {
     method: 'POST',
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
-/** normalUser POST /api/user/normal */
-export async function normalUserUsingPost(body: API.UserRequest, options?: { [key: string]: any }) {
-  return request<API.BaseResponseboolean>('/api/user/normal', {
+/** normalUser POST /api/user/normal/${userId} */
+export async function normalUserUsingPost(
+  userId: number | undefined,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseboolean>(`/api/user/normal/${userId}`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
 /** userRegister POST /api/user/register */
 export async function userRegisterUsingPost(
-  body: API.UserRequest,
-  options?: { [key: string]: any },
+  body: API.UserRegisterRequest,
+  options?: { [key: string]: any }
 ) {
   return request<API.BaseResponselong>('/api/user/register', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     data: body,
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
 /** userUnBindEmail POST /api/user/unbindEmail */
 export async function userUnBindEmailUsingPost(
-  body: API.UserRequest,
-  options?: { [key: string]: any },
+  body: API.UserUnBindEmailRequest,
+  options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseUserVO>('/api/user/unbindEmail', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     data: body,
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
 /** updateUser POST /api/user/update */
-export async function updateUserUsingPost(body: API.UserRequest, options?: { [key: string]: any }) {
+export async function updateUserUsingPost(
+  body: API.UserUpdateRequest,
+  options?: { [key: string]: any }
+) {
   return request<API.BaseResponseUserVO>('/api/user/update', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     data: body,
-    ...(options || {}),
+    ...(options || {})
   });
 }
 
@@ -229,6 +228,6 @@ export async function updateUserUsingPost(body: API.UserRequest, options?: { [ke
 export async function updateDevCredUsingPost(options?: { [key: string]: any }) {
   return request<API.BaseResponseUserVO>('/api/user/update/devCred', {
     method: 'POST',
-    ...(options || {}),
+    ...(options || {})
   });
 }
